@@ -38,8 +38,6 @@ class JwtAuthFilter(
             } catch (_: ExpiredJwtException) {
                 println("JWT Token has expired");
             }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
         }
         if (username != null && SecurityContextHolder.getContext().authentication == null) {
             val user = autenticacaoService.loadUserByUsername(username)
