@@ -2,6 +2,7 @@ package org.mogoldb.weberpBackend.delegate
 
 import jakarta.validation.Valid
 import org.mogoldb.weberpBackend.exception.NotFoundException
+import org.mogoldb.weberpBackend.payload.response.DeleteResponse
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -34,10 +35,10 @@ abstract class DefaultController<OB : DefaultEntity, PK : Long>(private val serv
     }
 
     @DeleteMapping("/{id}")
-    open fun destroy(@PathVariable(name = "id") id: PK): ResponseEntity<Void> {
+    open fun destroy(@PathVariable(name = "id") id: PK): ResponseEntity<DeleteResponse> {
         try {
             service.deleteById(id)
-            return ResponseEntity.ok().build()
+            return ResponseEntity.ok().body(DeleteResponse())
         } catch (e: EmptyResultDataAccessException) {
             throw NotFoundException()
         }
