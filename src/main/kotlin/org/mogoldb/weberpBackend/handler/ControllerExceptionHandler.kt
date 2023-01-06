@@ -9,10 +9,15 @@ import org.mogoldb.weberpBackend.payload.response.DuplicatedEntryErrorResponse
 import org.mogoldb.weberpBackend.payload.response.ErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.validation.FieldError
+import org.springframework.validation.ObjectError
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestControllerAdvice
+import java.util.function.Consumer
 
-@ControllerAdvice
+@RestControllerAdvice
 class ControllerExceptionHandler {
 
     @ExceptionHandler
@@ -52,5 +57,17 @@ class ControllerExceptionHandler {
             ex.field,
             "The value of this field cannot be duplicated in the database")
         return ResponseEntity.status(status).body(errorMessage)
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleMethodArgumentNotValidException(ex: MethodArgumentNotValidException): Map<String, String?>? {
+        val errors: MutableMap<String, String?> = HashMap()
+        ex.bindingResult.allErrors.forEach(Consumer { error: ObjectError ->
+            val fieldName = (error as FieldError).field
+            val errorMessage = error.getDefaultMessage()
+            errors[fieldName] = errorMessage
+        })
+        return errors
     }
 }
