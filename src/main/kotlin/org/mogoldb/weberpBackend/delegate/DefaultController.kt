@@ -6,6 +6,7 @@ import org.mogoldb.weberpBackend.payload.response.DeleteResponse
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.http.HttpStatus
 
 abstract class DefaultController<OB : DefaultEntity, PK : Long>(private val service: DefaultService<OB, PK>) {
 
@@ -23,7 +24,7 @@ abstract class DefaultController<OB : DefaultEntity, PK : Long>(private val serv
 
     @PostMapping
     open fun store(@Valid @RequestBody body: OB): ResponseEntity<OB> {
-        return ResponseEntity.ok(service.save(body))
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(service.save(body))
     }
 
     @PutMapping("/{id}")
