@@ -8,30 +8,29 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.HttpStatus
 
-abstract class DefaultController<OB : DefaultEntity, PK : Long>(private val service: DefaultService<OB, PK>) {
+abstract class DefaultController<OB : DefaultEntity, PK : Long>(
+    private val service: DefaultService<OB, PK>,
+) {
 
     @GetMapping
-    open fun index(): List<OB> =
-        service.findAll()
+    open fun index(): List<OB> = service.findAll()
 
     @GetMapping("/{id}")
     open fun show(@PathVariable(name = "id") id: PK): ResponseEntity<OB> {
         val existsPredicate = service.findById(id)
-        if (!existsPredicate.isPresent)
-            throw NotFoundException()
+        if (!existsPredicate.isPresent) throw NotFoundException()
         return ResponseEntity.ok(existsPredicate.get())
     }
 
     @PostMapping
     open fun store(@Valid @RequestBody body: OB): ResponseEntity<OB> {
-        return ResponseEntity.status(HttpStatus.CREATED.value()).body(service.save(body))
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(service.save(body, null))
     }
 
     @PutMapping("/{id}")
     open fun update(@Valid @RequestBody body: OB, @PathVariable(name = "id") id: PK): ResponseEntity<OB> {
         val existsPredicate = service.findById(id)
-        if (!existsPredicate.isPresent)
-            throw NotFoundException()
+        if (!existsPredicate.isPresent) throw NotFoundException()
         return ResponseEntity.ok(service.save(body, id))
     }
 
