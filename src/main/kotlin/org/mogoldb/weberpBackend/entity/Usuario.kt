@@ -1,7 +1,6 @@
 package org.mogoldb.weberpBackend.entity
 
-import com.fasterxml.jackson.annotation.JsonBackReference
-import com.fasterxml.jackson.annotation.JsonManagedReference
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotNull
@@ -37,11 +36,11 @@ open class Usuario(
     var telefone: String? = null,
 
     @OneToOne
-    @JsonBackReference
+    @JsonIgnore
     override var usuarioAtualizacao: Usuario? = null,
 
     @OneToOne
-    @JsonBackReference
+    @JsonIgnore
     override var usuarioCriacao: Usuario? = null,
 
     @Column(nullable = false, updatable = false)

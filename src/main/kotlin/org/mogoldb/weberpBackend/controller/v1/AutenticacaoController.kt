@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @RestController
 @CrossOrigin
-@RequestMapping("/v1/autenticacao")
+@RequestMapping("v1/autenticacao")
 class AutenticacaoController(
     @Autowired
     private val authenticationManager: AuthenticationManager,
