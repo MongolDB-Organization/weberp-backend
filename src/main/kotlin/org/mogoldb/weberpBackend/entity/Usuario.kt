@@ -1,11 +1,8 @@
 package org.mogoldb.weberpBackend.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Table
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
+import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonManagedReference
+import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.NotBlank
@@ -24,26 +21,34 @@ open class Usuario(
     @Column(nullable = false)
     @get: NotNull
     @get: NotBlank
-    var nome: String?,
+    var nome: String? = null,
 
     @Column(unique = true, nullable = false)
     @get: Email
     @get: NotNull
     @get: NotBlank
-    var email: String?,
+    var email: String? = null,
 
     @Column(nullable = false)
     @get: NotNull
     @get: NotBlank
-    var senha: String?,
+    var senha: String? = null,
 
-    var telefone: String?,
+    var telefone: String? = null,
 
-    @Column(nullable = false)
+    @OneToOne
+    @JsonBackReference
+    override var usuarioAtualizacao: Usuario? = null,
+
+    @OneToOne
+    @JsonBackReference
+    override var usuarioCriacao: Usuario? = null,
+
+    @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    var dataCriacao: LocalDateTime?,
+    override var dataCriacao: LocalDateTime? = null,
 
     @Column(nullable = false)
     @UpdateTimestamp
-    var dataModificacao: LocalDateTime?,
+    override var dataModificacao: LocalDateTime? = null,
 ) : DefaultEntity
