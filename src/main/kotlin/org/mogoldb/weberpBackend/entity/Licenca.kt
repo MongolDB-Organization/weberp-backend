@@ -1,7 +1,6 @@
 package org.mogoldb.weberpBackend.entity
 
 import jakarta.persistence.*
-import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -9,45 +8,30 @@ import org.mogoldb.weberpBackend.delegate.DefaultEntity
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "empresa")
-open class Empresa(
+@Table(name = "licenca")
+open class Licenca(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var codigo: Long = 0,
 
     @Column(nullable = false)
     @get: NotNull
-    @get: NotBlank
-    var razaoSocial: String? = null,
+    var dataInicio: LocalDateTime?,
 
     @Column(nullable = false)
     @get: NotNull
-    @get: NotBlank
-    var nomeFantasia: String? = null,
-
-    @Column(nullable = false, unique = true)
-    @get: NotNull
-    @get: NotBlank
-    var incricaoEstadual: String? = null,
-
-    @Column(nullable = false, unique = true)
-    @get: NotNull
-    @get: NotBlank
-    var cnpj: String? = null,
+    var dataVencimento: LocalDateTime?,
 
     @Column(nullable = false)
     @get: NotNull
-    @get: NotBlank
-    var email: String? = null,
+    var quantidadeDias: Int?,
 
     @Column(nullable = false)
-    @get:NotNull
-    @get:NotBlank
-    var telefone: String? = null,
+    @get: NotNull
+    var limiteUsuario: Int?,
 
-    @OneToOne
-    @JoinColumn(name = "licenca_codigo", nullable = true)
-    var licenca: Licenca? = null,
+    @OneToOne(mappedBy = "licenca", cascade = [CascadeType.ALL])
+    val empresa: Empresa?,
 
     @OneToOne
     override var usuarioAtualizacao: Usuario?,
@@ -62,4 +46,4 @@ open class Empresa(
     @Column(nullable = false)
     @UpdateTimestamp
     override var dataModificacao: LocalDateTime?,
-) : DefaultEntity
+    ) : DefaultEntity

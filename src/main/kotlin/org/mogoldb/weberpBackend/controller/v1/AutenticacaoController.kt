@@ -5,7 +5,7 @@ import org.mogoldb.weberpBackend.exception.BadRequestException
 import org.mogoldb.weberpBackend.exception.NotFoundException
 import org.mogoldb.weberpBackend.payload.request.LoginRequest
 import org.mogoldb.weberpBackend.payload.response.LoginResponse
-import org.mogoldb.weberpBackend.service.AuthenticationUserDetailsService
+import org.mogoldb.weberpBackend.service.UserDetailsService
 import org.mogoldb.weberpBackend.util.JwtTokenUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @RestController
 @CrossOrigin
-@RequestMapping("/v1/autenticacao")
+@RequestMapping("v1/autenticacao")
 class AutenticacaoController(
     @Autowired
     private val authenticationManager: AuthenticationManager,
     @Autowired
     private val jwtTokenUtil: JwtTokenUtil,
     @Autowired
-    private val autenticacaoService: AuthenticationUserDetailsService,
+    private val autenticacaoService: UserDetailsService,
 ) {
 
     @Throws(BadRequestException::class)
