@@ -5,7 +5,7 @@ import org.mogoldb.weberpBackend.exception.BadRequestException
 import org.mogoldb.weberpBackend.exception.NotFoundException
 import org.mogoldb.weberpBackend.payload.request.LoginRequest
 import org.mogoldb.weberpBackend.payload.response.LoginResponse
-import org.mogoldb.weberpBackend.service.AuthenticationUserDetailsService
+import org.mogoldb.weberpBackend.service.UserDetailsService
 import org.mogoldb.weberpBackend.util.JwtTokenUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -28,7 +28,7 @@ class AutenticacaoController(
     @Autowired
     private val jwtTokenUtil: JwtTokenUtil,
     @Autowired
-    private val autenticacaoService: AuthenticationUserDetailsService,
+    private val autenticacaoService: UserDetailsService,
 ) {
 
     @Throws(BadRequestException::class)

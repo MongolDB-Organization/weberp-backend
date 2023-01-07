@@ -1,6 +1,7 @@
 package org.mogoldb.weberpBackend.service
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class AuthenticationUserDetailsService(@Autowired val usuarioService: UsuarioService) : UserDetailsService {
+class UserDetailsService(@Autowired val usuarioService: UsuarioService) : UserDetailsService {
 
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(email: String?): UserDetails {
