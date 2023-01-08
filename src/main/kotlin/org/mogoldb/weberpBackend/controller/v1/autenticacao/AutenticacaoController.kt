@@ -1,4 +1,4 @@
-package org.mogoldb.weberpBackend.controller.v1
+package org.mogoldb.weberpBackend.controller.v1.autenticacao
 
 import jakarta.validation.Valid
 import org.mogoldb.weberpBackend.exception.BadRequestException

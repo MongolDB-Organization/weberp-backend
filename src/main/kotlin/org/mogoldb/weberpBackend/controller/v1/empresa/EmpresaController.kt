@@ -1,6 +1,6 @@
-package org.mogoldb.weberpBackend.controller.v1
+package org.mogoldb.weberpBackend.controller.v1.empresa
 
-import org.mogoldb.weberpBackend.delegate.DefaultController
+import org.mogoldb.weberpBackend.delegate.CrudController
 import org.mogoldb.weberpBackend.entity.Empresa
 import org.mogoldb.weberpBackend.service.EmpresaService
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,4 +9,4 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("v1/empresas")
-class EmpresaController(@Autowired private val service: EmpresaService) : DefaultController<Empresa, Long>(service)
+class EmpresaController(@Autowired override val service: EmpresaService) : CrudController<Empresa, Long>()

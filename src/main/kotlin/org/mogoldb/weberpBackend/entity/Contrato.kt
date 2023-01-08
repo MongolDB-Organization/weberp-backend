@@ -1,6 +1,7 @@
 package org.mogoldb.weberpBackend.entity
 
 import jakarta.persistence.*
+import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -8,36 +9,29 @@ import org.mogoldb.weberpBackend.delegate.DefaultEntity
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "licenca")
-open class Licenca(
+@Table(name = "contrato")
+open class Contrato(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var codigo: Long = 0,
 
     @Column(nullable = false)
     @get: NotNull
-    open var dataInicio: LocalDateTime?,
+    @get: NotBlank
+    open var nome: String,
 
-    @Column(nullable = false)
-    @get: NotNull
-    open var dataVencimento: LocalDateTime?,
-
-    @Column(nullable = false)
-    @get: NotNull
-    open var quantidadeDias: Int?,
-
-    @Column(nullable = false)
-    @get: NotNull
-    open var limiteUsuario: Int?,
-
-    @ManyToOne
-    open var contrato: Contrato?,
+    @OneToMany(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "contrato_codigo")
+    open var empresas: ArrayList<Empresa> = arrayListOf<Empresa>(),
 
     @OneToOne
-    override var usuarioAtualizacao: Usuario?,
+    open var licenca: Licenca?,
 
     @OneToOne
     override var usuarioCriacao: Usuario?,
+
+    @OneToOne
+    override var usuarioAtualizacao: Usuario?,
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
@@ -46,4 +40,4 @@ open class Licenca(
     @Column(nullable = false)
     @UpdateTimestamp
     override var dataModificacao: LocalDateTime?,
-    ) : DefaultEntity
+) : DefaultEntity
