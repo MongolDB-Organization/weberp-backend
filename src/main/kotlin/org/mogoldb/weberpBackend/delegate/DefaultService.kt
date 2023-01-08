@@ -18,17 +18,25 @@ abstract class DefaultService<OB : DefaultEntity, PK : Long>(private val reposit
         usuarioRepository.flush()
     }
 
-    private fun getLoggedUser() : Usuario? {
+    private fun getLoggedUser(): Usuario? {
         val email = SecurityContextHolder
             .getContext()
             .authentication
             .name
+        val emailQueryResult = usuarioRepository.findByEmail(email)
+        if (!emailQueryResult.isPresent)
+            return null
         return usuarioRepository.findByEmail(email).get()
     }
 
     open fun findAll(): List<OB> = repository.findAll()
 
-    open fun findById(id: PK): Optional<OB> = repository.findById(id)
+    open fun findById(id: PK): OB? {
+        val result = repository.findById(id)
+        if (!result.isPresent)
+            return null
+        return result.get()
+    }
 
     open fun save(obj: OB): OB {
         return repository.save(obj)
@@ -37,9 +45,11 @@ abstract class DefaultService<OB : DefaultEntity, PK : Long>(private val reposit
     open fun save(obj: OB, id: PK? = null): OB {
         if (id != null) obj.codigo = id
         val loggedUser = getLoggedUser()
-        obj.usuarioAtualizacao = loggedUser
-        if (obj.codigo.toInt() == 0 && id == null) {
-            obj.usuarioCriacao = loggedUser
+        if (loggedUser != null) {
+            obj.usuarioAtualizacao = loggedUser
+            if (obj.codigo.toInt() == 0 && id == null) {
+                obj.usuarioCriacao = loggedUser
+            }
         }
         return repository.save(obj)
     }

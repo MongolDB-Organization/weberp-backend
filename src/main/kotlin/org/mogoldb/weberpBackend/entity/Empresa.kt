@@ -18,36 +18,35 @@ open class Empresa(
     @Column(nullable = false)
     @get: NotNull
     @get: NotBlank
-    var razaoSocial: String? = null,
+    open var razaoSocial: String? = null,
 
     @Column(nullable = false)
     @get: NotNull
     @get: NotBlank
-    var nomeFantasia: String? = null,
+    open var nomeFantasia: String? = null,
 
     @Column(nullable = false, unique = true)
     @get: NotNull
     @get: NotBlank
-    var incricaoEstadual: String? = null,
+    open var incricaoEstadual: String? = null,
 
     @Column(nullable = false, unique = true)
     @get: NotNull
     @get: NotBlank
-    var cnpj: String? = null,
+    open var cnpj: String? = null,
 
     @Column(nullable = false)
     @get: NotNull
     @get: NotBlank
-    var email: String? = null,
+    open var email: String? = null,
 
     @Column(nullable = false)
     @get:NotNull
     @get:NotBlank
-    var telefone: String? = null,
+    open var telefone: String? = null,
 
-    @OneToOne
-    @JoinColumn(name = "licenca_codigo", nullable = true)
-    var licenca: Licenca? = null,
+    @ManyToOne
+    open var contrato: Contrato?,
 
     @OneToOne
     override var usuarioAtualizacao: Usuario?,
