@@ -1,11 +1,14 @@
 package org.mogoldb.weberpBackend.controller.v1.autenticacao
 
 import jakarta.validation.Valid
+import org.mogoldb.weberpBackend.controller.v1.autenticacao.payload.request.CadastroRequest
+import org.mogoldb.weberpBackend.entity.Usuario
 import org.mogoldb.weberpBackend.exception.BadRequestException
 import org.mogoldb.weberpBackend.exception.NotFoundException
-import org.mogoldb.weberpBackend.payload.request.LoginRequest
-import org.mogoldb.weberpBackend.payload.response.LoginResponse
+import org.mogoldb.weberpBackend.controller.v1.autenticacao.payload.request.EntrarRequest
+import org.mogoldb.weberpBackend.controller.v1.autenticacao.payload.response.TokenResponse
 import org.mogoldb.weberpBackend.service.UserDetailsService
+import org.mogoldb.weberpBackend.service.UsuarioService
 import org.mogoldb.weberpBackend.util.JwtTokenUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -29,10 +32,12 @@ class AutenticacaoController(
     private val jwtTokenUtil: JwtTokenUtil,
     @Autowired
     private val autenticacaoService: UserDetailsService,
+    @Autowired
+    private val usuarioService: UsuarioService,
 ) {
 
     @Throws(BadRequestException::class)
-    private fun authenticate(email: String, password: String) {
+    private fun authenticateWithEmailAndPassword(email: String, password: String) {
         try {
             authenticationManager.authenticate(UsernamePasswordAuthenticationToken(email, password))
         } catch (_: DisabledException) {
@@ -43,12 +48,28 @@ class AutenticacaoController(
     }
 
     @PostMapping("/entrar")
-    fun createAuthenticationToken(@Valid @RequestBody body: LoginRequest): ResponseEntity<LoginResponse> {
-        authenticate(body.email!!, body.senha!!)
-        val userDetails = autenticacaoService.loadUserByUsername(body.email)
-            ?: throw NotFoundException()
-
+    private fun signin(@Valid @RequestBody body: EntrarRequest): ResponseEntity<TokenResponse> {
+        authenticateWithEmailAndPassword(body.email!!, body.senha!!)
+        val userDetails = autenticacaoService.loadUserByUsername(body.email) ?: throw NotFoundException()
         val token = jwtTokenUtil.generateToken(userDetails!!)
-        return ResponseEntity.ok(LoginResponse(token))
+        return ResponseEntity.ok(TokenResponse(token))
+    }
+
+
+    @PostMapping("/cadastrar")
+    private fun signup(@Valid @RequestBody body: CadastroRequest): ResponseEntity<TokenResponse> {
+        val usuario = Usuario()
+        usuario.nome = body.nome
+        usuario.email = body.email
+        usuario.senha = body.senha
+        usuario.administrador = false
+        usuario.telefone = body.telefone
+        val email = usuario.email ?: ""
+        val senha = usuario.senha ?: ""
+        usuarioService.save(usuario, null)
+        authenticateWithEmailAndPassword(email, senha)
+        val userDetails = autenticacaoService.loadUserByUsername(body.email) ?: throw NotFoundException()
+        val token = jwtTokenUtil.generateToken(userDetails!!)
+        return ResponseEntity.ok().body(TokenResponse(token))
     }
 }

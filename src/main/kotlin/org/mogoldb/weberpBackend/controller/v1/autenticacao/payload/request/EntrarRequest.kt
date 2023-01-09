@@ -1,10 +1,10 @@
-package org.mogoldb.weberpBackend.payload.request
+package org.mogoldb.weberpBackend.controller.v1.autenticacao.payload.request
 
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
-class LoginRequest (
+class EntrarRequest (
     @get: NotNull
     @get: NotBlank
     @get: Email

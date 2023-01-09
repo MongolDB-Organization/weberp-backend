@@ -1,9 +1,9 @@
-package org.mogoldb.weberpBackend.controller.v1.usuario.payload.request
+package org.mogoldb.weberpBackend.controller.v1.autenticacao.payload.request
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
-open class CriarUsuarioRequest(
+open class CadastroRequest(
     @get: NotNull
     @get: NotBlank
     open var nome: String? = null,
