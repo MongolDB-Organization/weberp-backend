@@ -55,9 +55,6 @@ class AutenticacaoController(
         authenticateWithEmailAndPassword(body.email!!, body.senha!!)
         val userDetails = autenticacaoService.loadUserByUsername(body.email) ?: throw NotFoundException()
         val token = jwtTokenUtil.generateToken(userDetails!!)
-        val emailDetails = EmailDetails(body.email!!, "Foi realizado um login em seu usuário", "Login realizado")
-        if (!emailService.sendMail(emailDetails))
-            throw BadRequestException("Nãoi foi possível enviar o email")
         return ResponseEntity.ok(TokenResponse(token))
     }
 
