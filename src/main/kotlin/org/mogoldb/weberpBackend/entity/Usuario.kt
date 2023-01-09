@@ -21,7 +21,7 @@ open class Usuario(
     @Column(nullable = false) @get: NotNull @get: NotBlank @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) open var senha: String? = null,
     open var telefone: String? = null,
     @Column(nullable = false) open var administrador: Boolean = false,
-    @Column(unique = true) open var codigoVerificacao: String? = null,
+    @Column(unique = true, length = 8) open var codigoVerificacao: String? = null,
     @Column(nullable = false) open var verificado: Boolean = false,
     @ManyToMany(targetEntity = Contrato::class) open var contratos: List<Contrato> = ArrayList<Contrato>(),
     @ManyToMany(targetEntity = Empresa::class) open var empresas: List<Empresa> = ArrayList<Empresa>(),

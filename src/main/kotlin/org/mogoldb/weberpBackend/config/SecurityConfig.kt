@@ -60,7 +60,10 @@ class SecurityConfig(
             .and()
             .authorizeHttpRequests()
             .requestMatchers(
-                "/v1/autenticacao/**", "/error/**"
+                "/v1/autenticacao/entrar",
+                "/v1/autenticacao/cadastrar",
+                "/v1/autenticacao/enviar-codigo-verificao",
+                "/error/**"
             ).permitAll()
             .requestMatchers(
                 HttpMethod.POST, "/v1/usuarios"
