@@ -14,11 +14,11 @@ abstract class DefaultService<OB : DefaultEntity, PK : Long>(private val reposit
     lateinit var usuarioRepository: UsuarioRepository
 
     @PostConstruct
-    fun initialize() {
+    private fun initialize() {
         usuarioRepository.flush()
     }
 
-    private fun getLoggedUser(): Usuario? {
+    fun getLoggedUser(): Usuario? {
         val email = SecurityContextHolder
             .getContext()
             .authentication

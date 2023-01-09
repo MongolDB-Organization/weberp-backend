@@ -1,3 +1,3 @@
 package org.mogoldb.weberpBackend.exception
 
-class NotFoundException : RuntimeException()
+class NotFoundException(override val message: String? = null) : RuntimeException(message)

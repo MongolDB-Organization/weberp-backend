@@ -4,10 +4,11 @@ import org.mogoldb.weberpBackend.delegate.DefaultService
 import org.mogoldb.weberpBackend.entity.Empresa
 import org.mogoldb.weberpBackend.exception.DuplicateEntryException
 import org.mogoldb.weberpBackend.repository.EmpresaRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class EmpresaService(private val repository: EmpresaRepository) : DefaultService<Empresa, Long>(repository) {
+class EmpresaService(@Autowired private val repository: EmpresaRepository) : DefaultService<Empresa, Long>(repository) {
 
     fun findByCnpj(cnpj: String): Empresa? {
         return repository.findByCnpj(cnpj).map { item ->
@@ -31,5 +32,9 @@ class EmpresaService(private val repository: EmpresaRepository) : DefaultService
             throw DuplicateEntryException(obj::incricaoEstadual.name)
         }
         return super.save(obj, id)
+    }
+
+    fun buscarQuantidadeEmpresasPorLicenca(codigoContrato: Long) : Long {
+        return repository.buscarQuantidadeEmpresaPorLicenca(codigoContrato)
     }
 }

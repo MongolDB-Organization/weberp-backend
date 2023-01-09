@@ -13,4 +13,7 @@ interface EmpresaRepository : JpaRepository<Empresa, Long> {
 
     @Query("select e from Empresa e where e.incricaoEstadual = :inscricaoEstadual")
     fun findByInscricaoEstadual(@Param("inscricaoEstadual") inscricaoEstadual: String): Optional<Empresa>
+
+    @Query("select count(e) from Empresa e where e.contrato.licenca.codigo = :codigoLicenca")
+    fun buscarQuantidadeEmpresaPorLicenca(@Param("codigoLicenca") codigoLicenca: Long): Long
 }

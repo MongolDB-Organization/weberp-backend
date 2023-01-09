@@ -23,7 +23,7 @@ class ControllerExceptionHandler {
     @ExceptionHandler(NotFoundException::class)
     fun handleNotFoundException(ex: NotFoundException): ResponseEntity<ErrorResponse> {
         val status = HttpStatus.NOT_FOUND.value()
-        val errorMessage = ErrorResponse(status, "Not Found", "Nenhuma mensagem disponível")
+        val errorMessage = ErrorResponse(status, "Not Found", ex.message ?: "Nenhuma mensagem disponível")
         return ResponseEntity.status(status).body(errorMessage)
     }
 
@@ -52,10 +52,7 @@ class ControllerExceptionHandler {
     fun handleDuplicateEntryException(ex: DuplicateEntryException): ResponseEntity<DuplicatedEntryErrorResponse> {
         val status = HttpStatus.BAD_REQUEST.value()
         val errorMessage = DuplicatedEntryErrorResponse(
-            status,
-            "Entrada duplicada",
-            ex.field,
-            "O valor deste campo não pode estar duplicado no banco de dados"
+            status, "Entrada duplicada", ex.field, "O valor deste campo não pode estar duplicado no banco de dados"
         )
         return ResponseEntity.status(status).body(errorMessage)
     }

@@ -28,7 +28,11 @@ open class Licenca(
 
     @Column(nullable = false)
     @get: NotNull
-    open var limiteUsuario: Int?,
+    open var quantidadeUsuarios: Int?,
+
+    @Column(nullable = false)
+    @get: NotNull
+    open var quantidadeEmpresas: Int?,
 
     @ManyToOne
     open var contrato: Contrato?,
@@ -46,4 +50,4 @@ open class Licenca(
     @Column(nullable = false)
     @UpdateTimestamp
     override var dataModificacao: LocalDateTime?,
-    ) : DefaultEntity
+) : DefaultEntity

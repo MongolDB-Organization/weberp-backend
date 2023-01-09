@@ -2,6 +2,7 @@ package org.mogoldb.weberpBackend.service
 
 import org.mogoldb.weberpBackend.config.PasswordEncoderConfig
 import org.mogoldb.weberpBackend.delegate.DefaultService
+import org.mogoldb.weberpBackend.entity.Empresa
 import org.mogoldb.weberpBackend.entity.Usuario
 import org.mogoldb.weberpBackend.exception.DuplicateEntryException
 import org.mogoldb.weberpBackend.repository.UsuarioRepository

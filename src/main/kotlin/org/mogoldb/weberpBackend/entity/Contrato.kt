@@ -18,7 +18,7 @@ open class Contrato(
     @Column(nullable = false)
     @get: NotNull
     @get: NotBlank
-    open var nome: String,
+    open var nome: String? = null,
 
     @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name = "contrato_codigo")

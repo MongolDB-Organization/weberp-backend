@@ -46,6 +46,8 @@ open class Empresa(
     open var telefone: String? = null,
 
     @ManyToOne
+    @JoinColumn(nullable = false)
+    @get: NotNull
     open var contrato: Contrato?,
 
     @OneToOne
