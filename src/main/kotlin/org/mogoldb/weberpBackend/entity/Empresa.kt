@@ -11,56 +11,16 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "empresa")
 open class Empresa(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    override var codigo: Long = 0,
-
-    @Column(nullable = false)
-    @get: NotNull
-    @get: NotBlank
-    open var razaoSocial: String? = null,
-
-    @Column(nullable = false)
-    @get: NotNull
-    @get: NotBlank
-    open var nomeFantasia: String? = null,
-
-    @Column(nullable = false, unique = true)
-    @get: NotNull
-    @get: NotBlank
-    open var incricaoEstadual: String? = null,
-
-    @Column(nullable = false, unique = true)
-    @get: NotNull
-    @get: NotBlank
-    open var cnpj: String? = null,
-
-    @Column(nullable = false)
-    @get: NotNull
-    @get: NotBlank
-    open var email: String? = null,
-
-    @Column(nullable = false)
-    @get:NotNull
-    @get:NotBlank
-    open var telefone: String? = null,
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    @get: NotNull
-    open var contrato: Contrato?,
-
-    @OneToOne
-    override var usuarioAtualizacao: Usuario?,
-
-    @OneToOne
-    override var usuarioCriacao: Usuario?,
-
-    @Column(nullable = false, updatable = false)
-    @CreationTimestamp
-    override var dataCriacao: LocalDateTime?,
-
-    @Column(nullable = false)
-    @UpdateTimestamp
-    override var dataModificacao: LocalDateTime?,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) override var codigo: Long = 0,
+    @Column(nullable = false) @get: NotNull @get: NotBlank open var razaoSocial: String? = null,
+    @Column(nullable = false) @get: NotNull @get: NotBlank open var nomeFantasia: String? = null,
+    @Column(nullable = false, unique = true) @get: NotNull @get: NotBlank open var incricaoEstadual: String? = null,
+    @Column(nullable = false, unique = true) @get: NotNull @get: NotBlank open var cnpj: String? = null,
+    @Column(nullable = false) @get: NotNull @get: NotBlank open var email: String? = null,
+    @Column(nullable = false) @get:NotNull @get:NotBlank open var telefone: String? = null,
+    @ManyToOne @JoinColumn(nullable = false) @get: NotNull open var contrato: Contrato?,
+    @OneToOne override var usuarioAtualizacao: Usuario?,
+    @OneToOne override var usuarioCriacao: Usuario?,
+    @Column(nullable = false, updatable = false) @CreationTimestamp override var dataCriacao: LocalDateTime?,
+    @Column(nullable = false) @UpdateTimestamp override var dataModificacao: LocalDateTime?,
 ) : DefaultEntity

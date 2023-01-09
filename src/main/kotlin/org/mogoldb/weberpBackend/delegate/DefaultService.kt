@@ -19,13 +19,9 @@ abstract class DefaultService<OB : DefaultEntity, PK : Long>(private val reposit
     }
 
     fun getLoggedUser(): Usuario? {
-        val email = SecurityContextHolder
-            .getContext()
-            .authentication
-            .name
+        val email = SecurityContextHolder.getContext().authentication.name
         val emailQueryResult = usuarioRepository.findByEmail(email)
-        if (!emailQueryResult.isPresent)
-            return null
+        if (!emailQueryResult.isPresent) return null
         return usuarioRepository.findByEmail(email).get()
     }
 
@@ -33,8 +29,7 @@ abstract class DefaultService<OB : DefaultEntity, PK : Long>(private val reposit
 
     open fun findById(id: PK): OB? {
         val result = repository.findById(id)
-        if (!result.isPresent)
-            return null
+        if (!result.isPresent) return null
         return result.get()
     }
 

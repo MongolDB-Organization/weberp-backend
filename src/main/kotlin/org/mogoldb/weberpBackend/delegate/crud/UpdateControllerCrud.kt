@@ -14,8 +14,7 @@ interface UpdateControllerCrud<OB : DefaultEntity, PK : Long> {
 
     @PutMapping("/{id}")
     open fun update(@Valid @RequestBody body: OB, @PathVariable(name = "id") id: PK): ResponseEntity<OB> {
-        val existsPredicate = service.findById(id)
-            ?: throw NotFoundException()
+        val existsPredicate = service.findById(id) ?: throw NotFoundException()
         return ResponseEntity.ok(service.save(body, id))
     }
 }

@@ -19,16 +19,13 @@ import kotlin.jvm.Throws
 
 @RestController
 @RequestMapping("v1/usuarios")
-class UsuarioController(@Autowired override val service: UsuarioService) :
-    IndexControllerCrud<Usuario, Long>,
-    ShowControllerCrud<Usuario, Long>,
+class UsuarioController(@Autowired override val service: UsuarioService) : IndexControllerCrud<Usuario, Long>, ShowControllerCrud<Usuario, Long>,
     DeleteControllerCrud<Usuario, Long> {
 
     @PutMapping("/{id}")
     @Throws(NotFoundException::class)
     fun update(@Valid @RequestBody body: Usuario, @PathVariable(name = "id") id: Long): ResponseEntity<DefaultUsuarioResponse> {
-        val usuario = service.findById(id)
-            ?: throw NotFoundException()
+        val usuario = service.findById(id) ?: throw NotFoundException()
         body.codigo = id
         body.senha = usuario.senha
         body.administrador = usuario.administrador

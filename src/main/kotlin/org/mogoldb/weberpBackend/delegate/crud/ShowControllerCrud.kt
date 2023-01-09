@@ -12,8 +12,7 @@ interface ShowControllerCrud<OB : DefaultEntity, PK : Long> {
 
     @GetMapping("/{id}")
     open fun show(@PathVariable(name = "id") id: PK): ResponseEntity<OB> {
-        val existsPredicate = service.findById(id)
-            ?: throw NotFoundException()
+        val existsPredicate = service.findById(id) ?: throw NotFoundException()
         return ResponseEntity.ok(existsPredicate)
     }
 

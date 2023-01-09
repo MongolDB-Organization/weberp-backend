@@ -13,7 +13,7 @@ class DefaultUsuarioResponse(
     val empresas: List<Empresa>,
 ) {
     companion object {
-        fun fromUsuario(usuario: Usuario) : DefaultUsuarioResponse {
+        fun fromUsuario(usuario: Usuario): DefaultUsuarioResponse {
             return DefaultUsuarioResponse(
                 usuario.nome!!,
                 usuario.email!!,

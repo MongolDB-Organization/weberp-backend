@@ -39,8 +39,7 @@ class JwtTokenUtil(@Value("\${jwt.secret}") private val secret: String) {
     }
 
     fun isTokenExpired(token: String): Boolean {
-        return getExpirationDateFromToken(token)
-            .before(Date())
+        return getExpirationDateFromToken(token).before(Date())
     }
 
     private fun doGenerateToken(claims: Map<String, Any>, subject: String): String {

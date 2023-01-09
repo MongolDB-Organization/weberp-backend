@@ -26,14 +26,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 @CrossOrigin
 @RequestMapping("v1/autenticacao")
 class AutenticacaoController(
-    @Autowired
-    private val authenticationManager: AuthenticationManager,
-    @Autowired
-    private val jwtTokenUtil: JwtTokenUtil,
-    @Autowired
-    private val autenticacaoService: UserDetailsService,
-    @Autowired
-    private val usuarioService: UsuarioService,
+    @Autowired private val authenticationManager: AuthenticationManager,
+    @Autowired private val jwtTokenUtil: JwtTokenUtil,
+    @Autowired private val autenticacaoService: UserDetailsService,
+    @Autowired private val usuarioService: UsuarioService,
 ) {
 
     @Throws(BadRequestException::class)

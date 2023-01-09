@@ -22,14 +22,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    @Autowired
-    private val userService: UserDetailsService,
-    @Autowired
-    private val jwtAuthFilter: JwtAuthFilter,
-    @Autowired
-    private val unAuthHandler: AuthEntryPoint,
-    @Autowired
-    private val configuration: PasswordEncoderConfig
+    @Autowired private val userService: UserDetailsService,
+    @Autowired private val jwtAuthFilter: JwtAuthFilter,
+    @Autowired private val unAuthHandler: AuthEntryPoint,
+    @Autowired private val configuration: PasswordEncoderConfig
 ) {
     @Autowired
     @Throws(java.lang.Exception::class)
@@ -64,13 +60,11 @@ class SecurityConfig(
             .and()
             .authorizeHttpRequests()
             .requestMatchers(
-                "/v1/autenticacao/**",
-                "/error/**")
-            .permitAll()
+                "/v1/autenticacao/**", "/error/**"
+            ).permitAll()
             .requestMatchers(
-                HttpMethod.POST,
-                "/v1/usuarios")
-            .permitAll()
+                HttpMethod.POST, "/v1/usuarios"
+            ).permitAll()
             .anyRequest()
             .authenticated()
             .and()

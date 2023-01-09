@@ -34,7 +34,7 @@ class EmpresaService(@Autowired private val repository: EmpresaRepository) : Def
         return super.save(obj, id)
     }
 
-    fun buscarQuantidadeEmpresasPorLicenca(codigoContrato: Long) : Long {
+    fun buscarQuantidadeEmpresasPorLicenca(codigoContrato: Long): Long {
         return repository.buscarQuantidadeEmpresaPorLicenca(codigoContrato)
     }
 }

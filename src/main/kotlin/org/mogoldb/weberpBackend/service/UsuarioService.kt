@@ -12,9 +12,7 @@ import kotlin.jvm.Throws
 
 @Service
 class UsuarioService(
-    val repository: UsuarioRepository,
-    @Autowired
-    private val passwordEncoderConfiguration: PasswordEncoderConfig
+    val repository: UsuarioRepository, @Autowired private val passwordEncoderConfiguration: PasswordEncoderConfig
 ) : DefaultService<Usuario, Long>(repository) {
 
     fun findByEmail(email: String): Usuario? = repository.findByEmail(email).map { item ->
@@ -27,9 +25,7 @@ class UsuarioService(
         if (queryEmail != null && queryEmail.codigo != id) {
             throw DuplicateEntryException(obj::email.name)
         }
-        obj.senha = passwordEncoderConfiguration
-            .passwordEncoder()!!
-            .encode(obj.senha!!)
+        obj.senha = passwordEncoderConfiguration.passwordEncoder()!!.encode(obj.senha!!)
         return super.save(obj, id)
     }
 }

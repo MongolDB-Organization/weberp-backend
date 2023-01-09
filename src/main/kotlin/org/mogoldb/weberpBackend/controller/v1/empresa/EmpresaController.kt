@@ -24,12 +24,9 @@ class EmpresaController(
 
     @PostMapping
     override fun store(@Valid @RequestBody body: Empresa): ResponseEntity<Empresa> {
-        val contrato = contratoService.findById(body.contrato!!.codigo!!)
-            ?: throw NotFoundException("Contrato não encontrado")
-        val licenca = contrato.licenca
-            ?: throw BadRequestException("Contrato ainda não possui uma licença")
-        val dataVencimentoContrato = licenca!!.dataVencimento
-            ?: throw BadRequestException("A lincença do contrato não possui uma data de vencimento")
+        val contrato = contratoService.findById(body.contrato!!.codigo!!) ?: throw NotFoundException("Contrato não encontrado")
+        val licenca = contrato.licenca ?: throw BadRequestException("Contrato ainda não possui uma licença")
+        val dataVencimentoContrato = licenca!!.dataVencimento ?: throw BadRequestException("A lincença do contrato não possui uma data de vencimento")
         if (LocalDateTime.now().isAfter(dataVencimentoContrato)) {
             throw BadRequestException("Licença expirada")
         }
