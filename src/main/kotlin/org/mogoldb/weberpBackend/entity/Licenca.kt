@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
-import org.mogoldb.weberpBackend.delegate.DefaultEntity
+import org.mogoldb.weberpBackend.delegate.entity.NSEntity
 import java.time.LocalDateTime
 
 @Entity
@@ -21,4 +21,4 @@ open class Licenca(
     @OneToOne override var usuarioCriacao: Usuario?,
     @Column(nullable = false, updatable = false) @CreationTimestamp override var dataCriacao: LocalDateTime?,
     @Column(nullable = false) @UpdateTimestamp override var dataModificacao: LocalDateTime?,
-) : DefaultEntity
+) : NSEntity

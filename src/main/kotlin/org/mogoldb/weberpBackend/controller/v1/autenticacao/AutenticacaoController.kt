@@ -77,6 +77,7 @@ class AutenticacaoController(
     }
 
     @PostMapping("/enviar-codigo-verificao")
+    @Throws(BadRequestException::class, NotFoundException::class)
     private fun sendVerificationCode(@Valid @RequestBody body: EnviarCodigoVerificacaoRequest) : ResponseEntity<SuccessResponse> {
         val verificationCode: String = VerificationCodeUtil.genVerifyCode()
         val usuario = usuarioService.findByEmail(body.email!!) ?: throw NotFoundException("Usuário com este email não foi encontrado")
@@ -96,6 +97,7 @@ class AutenticacaoController(
     }
 
     @PostMapping("/validar-codigo-verificao")
+    @Throws(BadRequestException::class)
     private fun validateVerificationCode(@Valid @RequestBody body: ValidarCodigoVerificacao) : ResponseEntity<SuccessResponse> {
         val currentUser = usuarioService.getLoggedUser()
         if (currentUser!!.verificado) {

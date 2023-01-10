@@ -1,7 +1,7 @@
 package org.mogoldb.weberpBackend.controller.v1.empresa
 
 import jakarta.validation.Valid
-import org.mogoldb.weberpBackend.delegate.CrudController
+import org.mogoldb.weberpBackend.delegate.NSController
 import org.mogoldb.weberpBackend.entity.Empresa
 import org.mogoldb.weberpBackend.exception.BadRequestException
 import org.mogoldb.weberpBackend.exception.NotFoundException
@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 class EmpresaController(
     @Autowired override val service: EmpresaService,
     @Autowired private val contratoService: ContratoService,
-) : CrudController<Empresa, Long>() {
+) : NSController<Empresa>() {
 
     @PostMapping
     override fun store(@Valid @RequestBody body: Empresa): ResponseEntity<Empresa> {

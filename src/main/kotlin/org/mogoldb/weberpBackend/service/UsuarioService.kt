@@ -1,8 +1,7 @@
 package org.mogoldb.weberpBackend.service
 
 import org.mogoldb.weberpBackend.config.PasswordEncoderConfig
-import org.mogoldb.weberpBackend.delegate.DefaultService
-import org.mogoldb.weberpBackend.entity.Empresa
+import org.mogoldb.weberpBackend.delegate.service.NSService
 import org.mogoldb.weberpBackend.entity.Usuario
 import org.mogoldb.weberpBackend.exception.DuplicateEntryException
 import org.mogoldb.weberpBackend.repository.UsuarioRepository
@@ -13,7 +12,7 @@ import kotlin.jvm.Throws
 @Service
 class UsuarioService(
     val repository: UsuarioRepository, @Autowired private val passwordEncoderConfiguration: PasswordEncoderConfig
-) : DefaultService<Usuario, Long>(repository) {
+) : NSService<Usuario>(repository) {
 
     fun findByEmail(email: String): Usuario? = repository.findByEmail(email).map { item ->
         item

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
-import org.mogoldb.weberpBackend.delegate.DefaultEntity
+import org.mogoldb.weberpBackend.delegate.entity.NSContratoLevelEntity
 import java.time.LocalDateTime
 
 @Entity
@@ -18,9 +18,9 @@ open class Empresa(
     @Column(nullable = false, unique = true) @get: NotNull @get: NotBlank open var cnpj: String? = null,
     @Column(nullable = false) @get: NotNull @get: NotBlank open var email: String? = null,
     @Column(nullable = false) @get:NotNull @get:NotBlank open var telefone: String? = null,
-    @ManyToOne @JoinColumn(nullable = false) @get: NotNull open var contrato: Contrato?,
+    @ManyToOne @JoinColumn(nullable = false) @get: NotNull  override var contrato: Contrato?,
     @OneToOne override var usuarioAtualizacao: Usuario?,
     @OneToOne override var usuarioCriacao: Usuario?,
     @Column(nullable = false, updatable = false) @CreationTimestamp override var dataCriacao: LocalDateTime?,
     @Column(nullable = false) @UpdateTimestamp override var dataModificacao: LocalDateTime?,
-) : DefaultEntity
+) : NSContratoLevelEntity

@@ -2,9 +2,9 @@ package org.mogoldb.weberpBackend.controller.v1.usuario
 
 import jakarta.validation.Valid
 import org.mogoldb.weberpBackend.controller.v1.usuario.payload.response.DefaultUsuarioResponse
-import org.mogoldb.weberpBackend.delegate.crud.DeleteControllerCrud
-import org.mogoldb.weberpBackend.delegate.crud.IndexControllerCrud
-import org.mogoldb.weberpBackend.delegate.crud.ShowControllerCrud
+import org.mogoldb.weberpBackend.delegate.endpoint.NSDeleteEndpoint
+import org.mogoldb.weberpBackend.delegate.endpoint.NSIndexEndpoint
+import org.mogoldb.weberpBackend.delegate.endpoint.NSShowEndpoint
 import org.mogoldb.weberpBackend.entity.Usuario
 import org.mogoldb.weberpBackend.exception.NotFoundException
 import org.mogoldb.weberpBackend.service.UsuarioService
@@ -19,8 +19,7 @@ import kotlin.jvm.Throws
 
 @RestController
 @RequestMapping("v1/usuarios")
-class UsuarioController(@Autowired override val service: UsuarioService) : IndexControllerCrud<Usuario, Long>, ShowControllerCrud<Usuario, Long>,
-    DeleteControllerCrud<Usuario, Long> {
+class UsuarioController(@Autowired override val service: UsuarioService) : NSIndexEndpoint<Usuario>, NSShowEndpoint<Usuario>, NSDeleteEndpoint<Usuario> {
 
     @PutMapping("/{id}")
     @Throws(NotFoundException::class)

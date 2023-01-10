@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
-import org.mogoldb.weberpBackend.delegate.DefaultEntity
+import org.mogoldb.weberpBackend.delegate.entity.NSEntity
 import java.time.LocalDateTime
 import java.util.ArrayList
 
@@ -29,4 +29,4 @@ open class Usuario(
     @OneToOne @JsonIgnore override var usuarioCriacao: Usuario? = null,
     @Column(nullable = false, updatable = false) @CreationTimestamp override var dataCriacao: LocalDateTime? = null,
     @Column(nullable = false) @UpdateTimestamp override var dataModificacao: LocalDateTime? = null,
-) : DefaultEntity
+) : NSEntity

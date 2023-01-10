@@ -1,14 +1,14 @@
-package org.mogoldb.weberpBackend.delegate
+package org.mogoldb.weberpBackend.delegate.service
 
 import jakarta.annotation.PostConstruct
+import org.mogoldb.weberpBackend.delegate.entity.NSEntity
+import org.mogoldb.weberpBackend.delegate.repository.NSRepository
 import org.mogoldb.weberpBackend.entity.Usuario
 import org.mogoldb.weberpBackend.repository.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.Optional
 
-abstract class DefaultService<OB : DefaultEntity, PK : Long>(private val repository: JpaRepository<OB, PK>) {
+abstract class NSService<OB : NSEntity>(@Autowired private val repository: NSRepository<OB>) {
 
     @Autowired
     lateinit var usuarioRepository: UsuarioRepository
@@ -27,7 +27,7 @@ abstract class DefaultService<OB : DefaultEntity, PK : Long>(private val reposit
 
     open fun findAll(): List<OB> = repository.findAll()
 
-    open fun findById(id: PK): OB? {
+    open fun findById(id: Long): OB? {
         val result = repository.findById(id)
         if (!result.isPresent) return null
         return result.get()
@@ -37,7 +37,7 @@ abstract class DefaultService<OB : DefaultEntity, PK : Long>(private val reposit
         return repository.save(obj)
     }
 
-    open fun save(obj: OB, id: PK? = null): OB {
+    open fun save(obj: OB, id: Long? = null): OB {
         if (id != null) obj.codigo = id
         val loggedUser = getLoggedUser()
         if (loggedUser != null) {
@@ -49,7 +49,7 @@ abstract class DefaultService<OB : DefaultEntity, PK : Long>(private val reposit
         return repository.save(obj)
     }
 
-    open fun save(obj: OB, id: PK? = null, exec: Usuario): OB {
+    open fun save(obj: OB, id: Long? = null, exec: Usuario): OB {
         obj.usuarioAtualizacao = exec
         if (obj.codigo == null && id == null) {
             obj.usuarioCriacao = exec
@@ -57,5 +57,5 @@ abstract class DefaultService<OB : DefaultEntity, PK : Long>(private val reposit
         return save(obj, id)
     }
 
-    open fun deleteById(id: PK) = repository.deleteById(id)
+    open fun deleteById(id: Long) = repository.deleteById(id)
 }

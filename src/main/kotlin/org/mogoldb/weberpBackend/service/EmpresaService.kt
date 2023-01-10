@@ -1,6 +1,6 @@
 package org.mogoldb.weberpBackend.service
 
-import org.mogoldb.weberpBackend.delegate.DefaultService
+import org.mogoldb.weberpBackend.delegate.service.NSContratoLevelService
 import org.mogoldb.weberpBackend.entity.Empresa
 import org.mogoldb.weberpBackend.exception.DuplicateEntryException
 import org.mogoldb.weberpBackend.repository.EmpresaRepository
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class EmpresaService(@Autowired private val repository: EmpresaRepository) : DefaultService<Empresa, Long>(repository) {
+class EmpresaService(@Autowired private val repository: EmpresaRepository) : NSContratoLevelService<Empresa>(repository) {
 
     fun findByCnpj(cnpj: String): Empresa? {
         return repository.findByCnpj(cnpj).map { item ->

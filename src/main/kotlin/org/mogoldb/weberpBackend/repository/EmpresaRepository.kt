@@ -1,12 +1,12 @@
 package org.mogoldb.weberpBackend.repository;
 
+import org.mogoldb.weberpBackend.delegate.repository.NSContratoLevelRepository
 import org.mogoldb.weberpBackend.entity.Empresa
-import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.util.Optional
 
-interface EmpresaRepository : JpaRepository<Empresa, Long> {
+interface EmpresaRepository : NSContratoLevelRepository<Empresa> {
 
     @Query("select e from Empresa e where e.cnpj = :cnpj")
     fun findByCnpj(@Param("cnpj") cnpj: String): Optional<Empresa>
