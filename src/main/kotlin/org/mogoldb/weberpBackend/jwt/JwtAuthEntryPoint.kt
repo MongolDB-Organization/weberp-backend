@@ -1,4 +1,4 @@
-package org.mogoldb.weberpBackend.middleware
+package org.mogoldb.weberpBackend.jwt
 
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
@@ -11,9 +11,9 @@ import java.io.IOException
 
 
 @Component
-class AuthEntryPoint : AuthenticationEntryPoint {
+class JwtAuthEntryPoint : AuthenticationEntryPoint {
 
-    private val logger = LoggerFactory.getLogger(AuthEntryPoint::class.java)
+    private val logger = LoggerFactory.getLogger(JwtAuthEntryPoint::class.java)
 
     @Throws(IOException::class, ServletException::class)
     override fun commence(

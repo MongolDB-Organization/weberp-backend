@@ -14,7 +14,7 @@ import org.mogoldb.weberpBackend.mail.EmailService
 import org.mogoldb.weberpBackend.payload.response.SuccessResponse
 import org.mogoldb.weberpBackend.service.UserDetailsService
 import org.mogoldb.weberpBackend.service.UsuarioService
-import org.mogoldb.weberpBackend.util.JwtTokenUtil
+import org.mogoldb.weberpBackend.jwt.JwtTokenUtil
 import org.mogoldb.weberpBackend.util.VerificationCodeUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity

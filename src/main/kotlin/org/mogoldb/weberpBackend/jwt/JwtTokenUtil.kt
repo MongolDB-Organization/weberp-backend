@@ -1,4 +1,4 @@
-package org.mogoldb.weberpBackend.util;
+package org.mogoldb.weberpBackend.jwt;
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts

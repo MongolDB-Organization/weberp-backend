@@ -1,7 +1,7 @@
 package org.mogoldb.weberpBackend.config
 
-import org.mogoldb.weberpBackend.middleware.AuthEntryPoint
-import org.mogoldb.weberpBackend.middleware.JwtAuthFilter
+import org.mogoldb.weberpBackend.jwt.JwtAuthEntryPoint
+import org.mogoldb.weberpBackend.jwt.JwtAuthFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -30,7 +30,7 @@ class SecurityConfig {
     private lateinit var jwtAuthFilter: JwtAuthFilter
 
     @Autowired
-    private lateinit var unAuthHandler: AuthEntryPoint
+    private lateinit var unAuthHandler: JwtAuthEntryPoint
 
     @Autowired
     private lateinit var configuration: PasswordEncoderConfig
