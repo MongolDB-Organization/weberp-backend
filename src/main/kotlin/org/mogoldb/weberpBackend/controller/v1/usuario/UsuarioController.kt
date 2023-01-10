@@ -19,7 +19,10 @@ import kotlin.jvm.Throws
 
 @RestController
 @RequestMapping("v1/usuarios")
-class UsuarioController(@Autowired override val service: UsuarioService) : NSIndexEndpoint<Usuario>, NSShowEndpoint<Usuario>, NSDeleteEndpoint<Usuario> {
+class UsuarioController : NSIndexEndpoint<Usuario>, NSShowEndpoint<Usuario>, NSDeleteEndpoint<Usuario> {
+
+    @Autowired
+    override lateinit var service: UsuarioService
 
     @PutMapping("/{id}")
     @Throws(NotFoundException::class)

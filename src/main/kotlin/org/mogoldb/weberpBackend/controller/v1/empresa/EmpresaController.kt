@@ -17,10 +17,13 @@ import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("v1/empresas")
-class EmpresaController(
-    @Autowired override val service: EmpresaService,
-    @Autowired private val contratoService: ContratoService,
-) : NSController<Empresa>() {
+class EmpresaController : NSController<Empresa>() {
+
+    @Autowired
+    override lateinit var service: EmpresaService
+
+    @Autowired
+    private lateinit var contratoService: ContratoService
 
     @PostMapping
     override fun store(@Valid @RequestBody body: Empresa): ResponseEntity<Empresa> {

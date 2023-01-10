@@ -9,4 +9,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("v1/licencas")
-class LicencaController(@Autowired override val service: LicencaService) : NSController<Licenca>()
+class LicencaController : NSController<Licenca>() {
+
+    @Autowired
+    override lateinit var service: LicencaService
+}

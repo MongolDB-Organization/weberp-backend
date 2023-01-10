@@ -21,12 +21,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig(
-    @Autowired private val userService: UserDetailsService,
-    @Autowired private val jwtAuthFilter: JwtAuthFilter,
-    @Autowired private val unAuthHandler: AuthEntryPoint,
-    @Autowired private val configuration: PasswordEncoderConfig
-) {
+class SecurityConfig {
+
+    @Autowired
+    private lateinit var userService: UserDetailsService
+
+    @Autowired
+    private lateinit var jwtAuthFilter: JwtAuthFilter
+
+    @Autowired
+    private lateinit var unAuthHandler: AuthEntryPoint
+
+    @Autowired
+    private lateinit var configuration: PasswordEncoderConfig
+
     @Autowired
     @Throws(java.lang.Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
@@ -63,11 +71,12 @@ class SecurityConfig(
                 "/v1/autenticacao/entrar",
                 "/v1/autenticacao/cadastrar",
                 "/v1/autenticacao/enviar-codigo-verificao",
-                "/error/**"
-            ).permitAll()
+                "/error/**")
+            .permitAll()
             .requestMatchers(
-                HttpMethod.POST, "/v1/usuarios"
-            ).permitAll()
+                HttpMethod.POST,
+                "/v1/usuarios")
+            .permitAll()
             .anyRequest()
             .authenticated()
             .and()
@@ -75,7 +84,9 @@ class SecurityConfig(
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(
+                jwtAuthFilter,
+                UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
     }
 }

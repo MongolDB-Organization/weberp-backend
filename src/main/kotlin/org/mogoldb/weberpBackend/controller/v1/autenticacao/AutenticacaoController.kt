@@ -31,13 +31,22 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RestController
 @CrossOrigin
 @RequestMapping("v1/autenticacao")
-class AutenticacaoController(
-    @Autowired private val authenticationManager: AuthenticationManager,
-    @Autowired private val jwtTokenUtil: JwtTokenUtil,
-    @Autowired private val autenticacaoService: UserDetailsService,
-    @Autowired private val usuarioService: UsuarioService,
-    @Autowired private val emailService: EmailService,
-) {
+class AutenticacaoController {
+
+    @Autowired
+    private lateinit var authenticationManager: AuthenticationManager
+
+    @Autowired
+    private lateinit var jwtTokenUtil: JwtTokenUtil
+
+    @Autowired
+    private lateinit var autenticacaoService: UserDetailsService
+
+    @Autowired
+    private lateinit var usuarioService: UsuarioService
+
+    @Autowired
+    private lateinit var emailService: EmailService
 
     @Throws(BadRequestException::class)
     private fun authenticateWithEmailAndPassword(email: String, password: String) {
@@ -78,13 +87,12 @@ class AutenticacaoController(
 
     @PostMapping("/enviar-codigo-verificao")
     @Throws(BadRequestException::class, NotFoundException::class)
-    private fun sendVerificationCode(@Valid @RequestBody body: EnviarCodigoVerificacaoRequest) : ResponseEntity<SuccessResponse> {
+    private fun sendVerificationCode(@Valid @RequestBody body: EnviarCodigoVerificacaoRequest): ResponseEntity<SuccessResponse> {
         val verificationCode: String = VerificationCodeUtil.genVerifyCode()
         val usuario = usuarioService.findByEmail(body.email!!) ?: throw NotFoundException("Usuário com este email não foi encontrado")
         val emailDetails = EmailDetails(
-            body.email!!,
-            "Seu código de verificação é $verificationCode",
-            "Código de verificação")
+            body.email!!, "Seu código de verificação é $verificationCode", "Código de verificação"
+        )
         if (usuario!!.verificado) {
             throw BadRequestException("Usuário já verificado")
         }
@@ -98,7 +106,7 @@ class AutenticacaoController(
 
     @PostMapping("/validar-codigo-verificao")
     @Throws(BadRequestException::class)
-    private fun validateVerificationCode(@Valid @RequestBody body: ValidarCodigoVerificacao) : ResponseEntity<SuccessResponse> {
+    private fun validateVerificationCode(@Valid @RequestBody body: ValidarCodigoVerificacao): ResponseEntity<SuccessResponse> {
         val currentUser = usuarioService.getLoggedUser()
         if (currentUser!!.verificado) {
             throw BadRequestException("Usuário já verificado")

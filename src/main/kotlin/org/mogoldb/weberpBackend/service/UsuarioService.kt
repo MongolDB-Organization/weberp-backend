@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service
 import kotlin.jvm.Throws
 
 @Service
-class UsuarioService(
-    val repository: UsuarioRepository, @Autowired private val passwordEncoderConfiguration: PasswordEncoderConfig
-) : NSService<Usuario>(repository) {
+class UsuarioService(@Autowired val repository: UsuarioRepository) : NSService<Usuario>(repository) {
+
+    @Autowired
+    private lateinit var passwordEncoderConfiguration: PasswordEncoderConfig
 
     fun findByEmail(email: String): Usuario? = repository.findByEmail(email).map { item ->
         item
