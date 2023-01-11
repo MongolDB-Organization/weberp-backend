@@ -27,12 +27,6 @@ class UsuarioController : NSIndexEndpoint<Usuario>, NSShowEndpoint<Usuario>, NSD
     @PutMapping("/{id}")
     @Throws(NotFoundException::class)
     fun update(@Valid @RequestBody body: Usuario, @PathVariable(name = "id") id: Long): ResponseEntity<DefaultUsuarioResponse> {
-        val usuario = service.findById(id) ?: throw NotFoundException()
-        body.codigo = id
-        body.senha = usuario.senha
-        body.administrador = usuario.administrador
-        val usuarioAtualizado = service.update(body, id)
-        val usuarioDefaultResponse = DefaultUsuarioResponse.fromUsuario(usuarioAtualizado)
-        return ResponseEntity.ok().body(usuarioDefaultResponse)
+        return ResponseEntity.ok().body(DefaultUsuarioResponse.fromUsuario(service.update(body, id)))
     }
 }

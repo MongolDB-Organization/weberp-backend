@@ -1,9 +1,11 @@
 package org.mogoldb.weberpBackend.service
 
 import org.mogoldb.weberpBackend.config.PasswordEncoderConfig
+import org.mogoldb.weberpBackend.controller.v1.usuario.payload.response.DefaultUsuarioResponse
 import org.mogoldb.weberpBackend.delegate.service.NSService
 import org.mogoldb.weberpBackend.entity.Usuario
 import org.mogoldb.weberpBackend.exception.DuplicateEntryException
+import org.mogoldb.weberpBackend.exception.NotFoundException
 import org.mogoldb.weberpBackend.repository.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -31,5 +33,13 @@ class UsuarioService(@Autowired val repository: UsuarioRepository) : NSService<U
         }
         obj.senha = passwordEncoderConfiguration.passwordEncoder()!!.encode(obj.senha!!)
         super.afterCreateAndUpdate(obj, idUpdate, saveType)
+    }
+
+    override fun update(obj: Usuario, idObject: Long): Usuario {
+        val usuario = findById(idObject) ?: throw NotFoundException()
+        obj.codigo = idObject
+        obj.senha = usuario.senha
+        obj.administrador = usuario.administrador
+        return super.update(obj, idObject)
     }
 }
