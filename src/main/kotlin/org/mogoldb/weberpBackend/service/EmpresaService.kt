@@ -6,6 +6,7 @@ import org.mogoldb.weberpBackend.exception.DuplicateEntryException
 import org.mogoldb.weberpBackend.repository.EmpresaRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import kotlin.jvm.Throws
 
 @Service
 class EmpresaService(@Autowired private val repository: EmpresaRepository) : NSContratoLevelService<Empresa>(repository) {
@@ -22,19 +23,20 @@ class EmpresaService(@Autowired private val repository: EmpresaRepository) : NSC
         }.orElse(null)
     }
 
-    override fun save(obj: Empresa, id: Long?): Empresa {
+    fun buscarQuantidadeEmpresasPorLicenca(codigoContrato: Long): Long {
+        return repository.buscarQuantidadeEmpresaPorLicenca(codigoContrato)
+    }
+
+    @Throws(DuplicateEntryException::class)
+    override fun afterCreateAndUpdate(obj: Empresa, idUpdate: Long?, saveType: NSServiceSaveType) {
         val empresaCnpj = findByCnpj(obj.cnpj!!)
-        if (empresaCnpj != null && empresaCnpj.codigo != id) {
+        if (empresaCnpj != null && empresaCnpj.codigo != idUpdate) {
             throw DuplicateEntryException(obj::cnpj.name)
         }
         val empresaInsc = findByInscricaoEstadual(obj.incricaoEstadual!!)
-        if (empresaInsc != null && empresaInsc.codigo != id) {
+        if (empresaInsc != null && empresaInsc.codigo != idUpdate) {
             throw DuplicateEntryException(obj::incricaoEstadual.name)
         }
-        return super.save(obj, id)
-    }
-
-    fun buscarQuantidadeEmpresasPorLicenca(codigoContrato: Long): Long {
-        return repository.buscarQuantidadeEmpresaPorLicenca(codigoContrato)
+        super.afterCreateAndUpdate(obj, idUpdate, saveType)
     }
 }

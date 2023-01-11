@@ -46,8 +46,8 @@ class AutenticacaoService {
 
     fun signin(email: String, password: String): String {
         authenticateWithEmailAndPassword(email, password)
-        val userDetails = autenticacaoService.loadUserByUsername(email) ?: throw NotFoundException()
-        return jwtTokenUtil.generateToken(userDetails!!)
+        val userDetails = autenticacaoService.loadUserByUsername(email)
+        return jwtTokenUtil.generateToken(userDetails)
     }
 
     fun signup(nome: String, email: String, password: String, telefone: String?): String {
@@ -57,7 +57,7 @@ class AutenticacaoService {
         usuario.senha = password
         usuario.telefone = telefone
         usuario.administrador = false
-        usuarioService.save(usuario, null)
+        usuarioService.create(usuario)
         authenticateWithEmailAndPassword(email, password)
         val userDetails = autenticacaoService.loadUserByUsername(email)
         return jwtTokenUtil.generateToken(userDetails!!)
@@ -80,7 +80,7 @@ class AutenticacaoService {
             throw BadRequestException("Não foi possível enviar o email de verificação")
         }
         usuario.codigoVerificacao = verificationCode
-        usuarioService.save(usuario)
+        usuarioService.update(usuario, usuario.codigo)
     }
 
     @Throws(BadRequestException::class)
@@ -94,6 +94,6 @@ class AutenticacaoService {
         }
         currentUser.codigoVerificacao = null
         currentUser.verificado = true
-        usuarioService.save(currentUser)
+        usuarioService.update(currentUser, currentUser.codigo)
     }
 }

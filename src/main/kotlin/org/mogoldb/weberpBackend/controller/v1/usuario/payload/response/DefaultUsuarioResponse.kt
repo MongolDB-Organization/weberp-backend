@@ -9,8 +9,8 @@ class DefaultUsuarioResponse(
     val email: String,
     val telefone: String,
     val adiministrador: Boolean,
-    val contratos: List<Contrato>,
-    val empresas: List<Empresa>,
+    val contratos: Set<Contrato>,
+    val empresas: Set<Empresa>,
 ) {
     companion object {
         fun fromUsuario(usuario: Usuario): DefaultUsuarioResponse {

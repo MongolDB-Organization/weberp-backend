@@ -13,6 +13,6 @@ interface NSStoreEndpoint<OB : NSEntity> {
 
     @PostMapping
     open fun store(@Valid @RequestBody body: OB): ResponseEntity<OB> {
-        return ResponseEntity.status(HttpStatus.CREATED.value()).body(service.save(body, null))
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(service.create(body))
     }
 }

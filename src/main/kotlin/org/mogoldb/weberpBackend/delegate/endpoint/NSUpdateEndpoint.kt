@@ -14,7 +14,7 @@ interface NSUpdateEndpoint<OB : NSEntity> {
 
     @PutMapping("/{id}")
     open fun update(@Valid @RequestBody body: OB, @PathVariable(name = "id") id: Long): ResponseEntity<OB> {
-        val existsPredicate = service.findById(id) ?: throw NotFoundException()
-        return ResponseEntity.ok(service.save(body, id))
+        service.findById(id) ?: throw NotFoundException()
+        return ResponseEntity.ok(service.update(body, id))
     }
 }

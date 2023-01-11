@@ -17,8 +17,8 @@ open class Licenca(
     @Column(nullable = false) @get: NotNull open var quantidadeUsuarios: Int?,
     @Column(nullable = false) @get: NotNull open var quantidadeEmpresas: Int?,
     @ManyToOne open var contrato: Contrato?,
-    @OneToOne override var usuarioAtualizacao: Usuario?,
-    @OneToOne override var usuarioCriacao: Usuario?,
+    @OneToOne override var usuarioAtualizacao: Usuario? = null,
+    @OneToOne override var usuarioCriacao: Usuario? = null,
     @Column(nullable = false, updatable = false) @CreationTimestamp override var dataCriacao: LocalDateTime?,
     @Column(nullable = false) @UpdateTimestamp override var dataModificacao: LocalDateTime?,
 ) : NSEntity

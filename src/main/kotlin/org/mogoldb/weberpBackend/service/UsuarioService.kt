@@ -19,13 +19,17 @@ class UsuarioService(@Autowired val repository: UsuarioRepository) : NSService<U
         item
     }.orElse(null)
 
+    fun getContratosCodigos(usuario: Usuario): List<Long> {
+        return repository.getContratosCodigos(usuario.codigo)
+    }
+
     @Throws(DuplicateEntryException::class)
-    override fun save(obj: Usuario, id: Long?): Usuario {
+    override fun afterCreateAndUpdate(obj: Usuario, idUpdate: Long?, saveType: NSServiceSaveType) {
         val queryEmail = findByEmail(obj.email!!)
-        if (queryEmail != null && queryEmail.codigo != id) {
+        if (queryEmail != null && queryEmail.codigo != idUpdate) {
             throw DuplicateEntryException(obj::email.name)
         }
         obj.senha = passwordEncoderConfiguration.passwordEncoder()!!.encode(obj.senha!!)
-        return super.save(obj, id)
+        super.afterCreateAndUpdate(obj, idUpdate, saveType)
     }
 }

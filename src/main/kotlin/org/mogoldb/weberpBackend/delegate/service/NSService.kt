@@ -1,22 +1,22 @@
 package org.mogoldb.weberpBackend.delegate.service
 
-import jakarta.annotation.PostConstruct
 import org.mogoldb.weberpBackend.delegate.entity.NSEntity
 import org.mogoldb.weberpBackend.delegate.repository.NSRepository
 import org.mogoldb.weberpBackend.entity.Usuario
+import org.mogoldb.weberpBackend.exception.NotFoundException
 import org.mogoldb.weberpBackend.repository.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
+import kotlin.jvm.Throws
 
 abstract class NSService<OB : NSEntity>(@Autowired private val repository: NSRepository<OB>) {
 
+    enum class NSServiceSaveType {
+        CREATE, UPDATE
+    }
+
     @Autowired
     lateinit var usuarioRepository: UsuarioRepository
-
-    @PostConstruct
-    private fun initialize() {
-        usuarioRepository.flush()
-    }
 
     fun getLoggedUser(): Usuario? {
         val email = SecurityContextHolder.getContext().authentication.name
@@ -28,34 +28,37 @@ abstract class NSService<OB : NSEntity>(@Autowired private val repository: NSRep
     open fun findAll(): List<OB> = repository.findAll()
 
     open fun findById(id: Long): OB? {
-        val result = repository.findById(id)
-        if (!result.isPresent) return null
+        val result = repository.findById(id) ?: return null
+        if (!result.isPresent) {
+            return null
+        }
         return result.get()
     }
 
-    open fun save(obj: OB): OB {
+    open fun create(obj: OB): OB {
+        afterCreateAndUpdate(obj, null, NSServiceSaveType.CREATE)
         return repository.save(obj)
     }
 
-    open fun save(obj: OB, id: Long? = null): OB {
-        if (id != null) obj.codigo = id
-        val loggedUser = getLoggedUser()
-        if (loggedUser != null) {
-            obj.usuarioAtualizacao = loggedUser
-            if (obj.codigo.toInt() == 0 && id == null) {
-                obj.usuarioCriacao = loggedUser
-            }
-        }
+    open fun update(obj: OB, idObject: Long): OB {
+        afterCreateAndUpdate(obj, idObject, NSServiceSaveType.UPDATE)
+        obj.codigo = idObject
         return repository.save(obj)
-    }
-
-    open fun save(obj: OB, id: Long? = null, exec: Usuario): OB {
-        obj.usuarioAtualizacao = exec
-        if (obj.codigo == null && id == null) {
-            obj.usuarioCriacao = exec
-        }
-        return save(obj, id)
     }
 
     open fun deleteById(id: Long) = repository.deleteById(id)
+
+    @Throws(NotFoundException::class)
+    open fun afterCreateAndUpdate(obj: OB, idUpdate: Long?, saveType: NSServiceSaveType) {
+        val loggedUser = getLoggedUser()
+        if (saveType == NSServiceSaveType.CREATE) {
+            obj.usuarioCriacao = loggedUser
+            obj.usuarioAtualizacao = loggedUser
+        } else if (saveType == NSServiceSaveType.UPDATE) {
+            if (!repository.findById(idUpdate!!).isPresent) {
+                throw NotFoundException()
+            }
+            obj.usuarioAtualizacao = loggedUser
+        }
+    }
 }

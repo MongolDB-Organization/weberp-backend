@@ -18,7 +18,7 @@ open class Empresa(
     @Column(nullable = false, unique = true) @get: NotNull @get: NotBlank open var cnpj: String? = null,
     @Column(nullable = false) @get: NotNull @get: NotBlank open var email: String? = null,
     @Column(nullable = false) @get:NotNull @get:NotBlank open var telefone: String? = null,
-    @ManyToOne @JoinColumn(nullable = false) @get: NotNull  override var contrato: Contrato?,
+    @ManyToOne(cascade = [CascadeType.REMOVE]) @JoinColumn(nullable = false) @get: NotNull  override var contrato: Contrato?,
     @OneToOne override var usuarioAtualizacao: Usuario?,
     @OneToOne override var usuarioCriacao: Usuario?,
     @Column(nullable = false, updatable = false) @CreationTimestamp override var dataCriacao: LocalDateTime?,

@@ -31,7 +31,7 @@ class UsuarioController : NSIndexEndpoint<Usuario>, NSShowEndpoint<Usuario>, NSD
         body.codigo = id
         body.senha = usuario.senha
         body.administrador = usuario.administrador
-        val usuarioAtualizado = service.save(body, id)
+        val usuarioAtualizado = service.update(body, id)
         val usuarioDefaultResponse = DefaultUsuarioResponse.fromUsuario(usuarioAtualizado)
         return ResponseEntity.ok().body(usuarioDefaultResponse)
     }

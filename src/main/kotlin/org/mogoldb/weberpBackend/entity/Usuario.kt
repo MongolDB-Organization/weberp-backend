@@ -7,10 +7,11 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.UpdateTimestamp
 import org.mogoldb.weberpBackend.delegate.entity.NSEntity
 import java.time.LocalDateTime
-import java.util.ArrayList
 
 @Entity
 @Table(name = "usuario")
@@ -23,10 +24,12 @@ open class Usuario(
     @Column(nullable = false) open var administrador: Boolean = false,
     @Column(unique = true, length = 8) open var codigoVerificacao: String? = null,
     @Column(nullable = false) open var verificado: Boolean = false,
-    @ManyToMany(targetEntity = Contrato::class) open var contratos: List<Contrato> = ArrayList<Contrato>(),
-    @ManyToMany(targetEntity = Empresa::class) open var empresas: List<Empresa> = ArrayList<Empresa>(),
-    @OneToOne @JsonIgnore override var usuarioAtualizacao: Usuario? = null,
-    @OneToOne @JsonIgnore override var usuarioCriacao: Usuario? = null,
+    @ManyToMany(targetEntity = Contrato::class, cascade = [CascadeType.PERSIST, CascadeType.MERGE])  @JoinTable(
+        name = "usuarios_contratos", joinColumns = [JoinColumn(name = "usuarios_codigo")], inverseJoinColumns = [JoinColumn(name = "contratos_codigo")]
+    ) @Fetch(FetchMode.JOIN) open var contratos: Set<Contrato> = HashSet<Contrato>(),
+    @ManyToMany(targetEntity = Empresa::class) @Fetch(FetchMode.JOIN) open var empresas: Set<Empresa> = HashSet<Empresa>(),
+    @OneToOne(fetch = FetchType.LAZY) @JsonIgnore override var usuarioAtualizacao: Usuario? = null,
+    @OneToOne(fetch = FetchType.LAZY) @JsonIgnore override var usuarioCriacao: Usuario? = null,
     @Column(nullable = false, updatable = false) @CreationTimestamp override var dataCriacao: LocalDateTime? = null,
     @Column(nullable = false) @UpdateTimestamp override var dataModificacao: LocalDateTime? = null,
 ) : NSEntity
