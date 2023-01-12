@@ -47,7 +47,7 @@ class EmpresaService(@Autowired private val repository: EmpresaRepository) : NSC
     }
 
     override fun create(obj: Empresa): Empresa {
-        val contrato = contratoService.findById(obj.contrato!!.codigo!!)
+        val contrato = contratoService.findById(obj.contrato!!.codigo)
             ?: throw NotFoundException("Contrato não encontrado")
         val licenca = contrato.licenca ?: throw BadRequestException("Contrato ainda não possui uma licença")
         val dataVencimentoContrato = licenca.dataVencimento ?: throw BadRequestException("A lincença do contrato não possui uma data de vencimento")

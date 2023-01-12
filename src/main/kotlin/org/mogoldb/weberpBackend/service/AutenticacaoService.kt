@@ -59,7 +59,7 @@ class AutenticacaoService {
         usuarioService.create(usuario)
         authenticateWithEmailAndPassword(email, password)
         val userDetails = autenticacaoService.loadUserByUsername(email)
-        return jwtTokenUtil.generateToken(userDetails!!)
+        return jwtTokenUtil.generateToken(userDetails)
     }
 
     @Throws(NotFoundException::class, BadRequestException::class)
@@ -68,11 +68,11 @@ class AutenticacaoService {
         val usuario = usuarioService.findByEmail(email)
             ?: throw NotFoundException("Usuário com este email não foi encontrado")
         val emailDetails = EmailDetails(
-            email!!,
+            email,
             "Seu código de verificação é $verificationCode",
             "Código de verificação"
         )
-        if (usuario!!.verificado) {
+        if (usuario.verificado) {
             throw BadRequestException("Usuário já verificado")
         }
         if (!emailService.sendMail(emailDetails)) {
@@ -88,7 +88,7 @@ class AutenticacaoService {
         if (currentUser!!.verificado) {
             throw BadRequestException("Usuário já verificado")
         }
-        if (currentUser!!.codigoVerificacao != verifyCode) {
+        if (currentUser.codigoVerificacao != verifyCode) {
             throw BadRequestException("Código de verificação inválido")
         }
         currentUser.codigoVerificacao = null

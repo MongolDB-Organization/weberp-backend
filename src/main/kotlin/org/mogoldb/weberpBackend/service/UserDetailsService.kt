@@ -14,7 +14,7 @@ class UserDetailsService(@Autowired val usuarioService: UsuarioService) : UserDe
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(email: String?): UserDetails {
         val user = usuarioService.findByEmail(email!!)
-        return if (user != null && user.email == email!!) {
+        return if (user != null && user.email == email) {
             User(email, user.senha!!, ArrayList())
         } else {
             throw UsernameNotFoundException("User not found with email: $email")

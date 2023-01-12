@@ -32,10 +32,10 @@ class AutenticacaoController {
     private class TokenResponse(val token: String, val logged: Boolean = true)
 
     private class CadastroRequest(
-        @get: NotNull @get: NotBlank open var nome: String? = null,
-        @get: NotNull @get: NotBlank @get: Email open var email: String? = null,
-        @get: NotNull @get: NotBlank open var senha: String? = null,
-        open var telefone: String? = null
+        @get: NotNull @get: NotBlank var nome: String? = null,
+        @get: NotNull @get: NotBlank @get: Email var email: String? = null,
+        @get: NotNull @get: NotBlank var senha: String? = null,
+        var telefone: String? = null
     )
 
 

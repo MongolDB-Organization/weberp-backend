@@ -28,7 +28,7 @@ abstract class NSService<OB : NSEntity>(@Autowired private val repository: NSRep
     open fun findAll(): List<OB> = repository.findAll()
 
     open fun findById(id: Long): OB? {
-        val result = repository.findById(id) ?: return null
+        val result = repository.findById(id)
         if (!result.isPresent) {
             return null
         }
