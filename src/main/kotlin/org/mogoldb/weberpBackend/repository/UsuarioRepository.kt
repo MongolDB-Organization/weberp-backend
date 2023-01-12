@@ -13,6 +13,6 @@ interface UsuarioRepository : NSRepository<Usuario> {
     @Query("select u from Usuario u where u.email = :email")
     fun findByEmail(@Param("email") email: String): Optional<Usuario>
 
-    @Query("select uc from 'usuario_contratos' uc.usuario_codigo where uc = :codigo", nativeQuery = true)
+    @Query("select uc.usuarios_codigo from usuarios_contratos as uc where uc.usuarios_codigo = :codigo", nativeQuery = true)
     fun getContratosCodigos(codigo: Long) : List<Long>
 }

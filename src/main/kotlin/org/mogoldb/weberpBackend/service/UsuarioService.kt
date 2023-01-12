@@ -1,7 +1,6 @@
 package org.mogoldb.weberpBackend.service
 
 import org.mogoldb.weberpBackend.config.PasswordEncoderConfig
-import org.mogoldb.weberpBackend.controller.v1.usuario.payload.response.DefaultUsuarioResponse
 import org.mogoldb.weberpBackend.delegate.service.NSService
 import org.mogoldb.weberpBackend.entity.Usuario
 import org.mogoldb.weberpBackend.exception.DuplicateEntryException

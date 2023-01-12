@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class AutenticacaoService {
-
     @Autowired
     private lateinit var authenticationManager: AuthenticationManager
 
