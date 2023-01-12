@@ -1,4 +1,4 @@
-package org.mogoldb.weberpBackend.controller.v1.empresa
+package org.mogoldb.weberpBackend.controller.v1
 
 import org.mogoldb.weberpBackend.delegate.NSController
 import org.mogoldb.weberpBackend.entity.Empresa

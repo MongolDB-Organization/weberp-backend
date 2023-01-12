@@ -1,4 +1,4 @@
-package org.mogoldb.weberpBackend.controller.v1.contrato
+package org.mogoldb.weberpBackend.controller.v1
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
