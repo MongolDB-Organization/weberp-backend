@@ -1,5 +1,6 @@
 package org.mogoldb.weberpBackend.delegate.endpoint
 
+import jakarta.transaction.Transactional
 import org.mogoldb.weberpBackend.delegate.entity.NSEntity
 import org.mogoldb.weberpBackend.delegate.service.NSService
 import org.springframework.web.bind.annotation.GetMapping

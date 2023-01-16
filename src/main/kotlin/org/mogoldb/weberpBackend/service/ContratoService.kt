@@ -15,9 +15,9 @@ class ContratoService(@Autowired private val repository: ContratoRepository) : N
     @Autowired
     private lateinit var usuarioService: UsuarioService
 
-    fun findUsuariosByContratos(usuario: Usuario): List<Contrato> {
-        return repository.findAll()
-    }
+//    fun findUsuariosByContratos(usuario: Usuario): List<Contrato> {
+//        return repository.findAll()
+//    }
 
     override fun findById(id: Long): Contrato? {
         val loggedUser = getLoggedUser()
@@ -32,7 +32,7 @@ class ContratoService(@Autowired private val repository: ContratoRepository) : N
         val loggedUser = getLoggedUser()
         if (saveType == NSServiceSaveType.CREATE) {
             obj.usuarioProprietario = loggedUser
-            obj.usuarios = hashSetOf(loggedUser!!)
+            obj.usuarios.add(loggedUser!!)
         }
         super.afterCreateAndUpdate(obj, idUpdate, saveType)
     }
