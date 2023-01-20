@@ -1,37 +1,40 @@
 package org.mogoldb.weberpBackend.controller.v1
 
 import jakarta.validation.Valid
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
-import org.mogoldb.weberpBackend.delegate.endpoint.NSIndexEndpoint
-import org.mogoldb.weberpBackend.delegate.endpoint.NSShowEndpoint
-import org.mogoldb.weberpBackend.entity.Contrato
-import org.mogoldb.weberpBackend.exception.NotFoundException
+import org.mogoldb.weberpBackend.dto.request.ContratoCreateUpdateDto
+import org.mogoldb.weberpBackend.dto.response.ContratoDetailedDto
+import org.mogoldb.weberpBackend.dto.response.ContratoDto
 import org.mogoldb.weberpBackend.service.ContratoService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("v1/contratos")
-class ContratoController : NSIndexEndpoint<Contrato>, NSShowEndpoint<Contrato> {
+class ContratoController {
 
     @Autowired
-    override lateinit var service: ContratoService
+    lateinit var service: ContratoService
 
-    private class ContratoStoreRequest(@get: NotNull @get: NotBlank val nome: String? = null)
+    @GetMapping
+    fun index(): List<ContratoDto> {
+        return service.findAll()
+    }
+
+    @GetMapping("/{id}")
+    fun show(@PathVariable(name = "id") id: Long): ContratoDetailedDto {
+        return service.findById(id)
+    }
 
     @PostMapping
-    private fun store(@Valid @RequestBody body: ContratoStoreRequest): ResponseEntity<Contrato> {
-        val contrato = Contrato(nome = body.nome)
-        return ResponseEntity.ok(service.create(contrato))
+    private fun store(@Valid @RequestBody body: ContratoCreateUpdateDto): ResponseEntity<ContratoDetailedDto> {
+        return ResponseEntity.ok(service.create(body))
     }
 
     @PutMapping("/{id}")
     @Throws(NotFoundException::class)
-    private fun update(@Valid @RequestBody body: ContratoStoreRequest, @PathVariable(name = "id") id: Long): ResponseEntity<Contrato> {
-        val contrato = service.findById(id) ?: throw NotFoundException()
-        contrato.nome = body.nome
-        return ResponseEntity.ok(service.update(contrato, id))
+    private fun update(@Valid @RequestBody body: ContratoCreateUpdateDto, @PathVariable(name = "id") id: Long): ResponseEntity<ContratoDetailedDto> {
+        return ResponseEntity.ok(service.update(body, id))
     }
 }

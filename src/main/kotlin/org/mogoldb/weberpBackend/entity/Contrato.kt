@@ -1,8 +1,6 @@
 package org.mogoldb.weberpBackend.entity
 
 import jakarta.persistence.*
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import org.mogoldb.weberpBackend.delegate.entity.NSEntity
@@ -16,19 +14,17 @@ data class Contrato(
     override var codigo: Long = 0,
 
     @Column(nullable = false)
-    @get: NotNull
-    @get: NotBlank
-    open var nome: String? = null,
+    open var nome: String = "",
 
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], targetEntity = Empresa::class)
     @JoinColumn(name = "contrato_codigo")
     open var empresas: Set<Empresa> = HashSet<Empresa>(),
 
     @OneToOne open var licenca: Licenca? = null,
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Usuario::class, mappedBy = "contratos")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST], targetEntity = Usuario::class, mappedBy = "contratos")
     open var usuarios: MutableList<Usuario> = arrayListOf<Usuario>(),
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @OneToOne(fetch = FetchType.LAZY)
     open var usuarioProprietario: Usuario? = null,
 
     @OneToOne(fetch = FetchType.LAZY)

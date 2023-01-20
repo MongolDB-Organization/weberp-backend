@@ -71,11 +71,13 @@ class SecurityConfig {
                 "/v1/autenticacao/entrar",
                 "/v1/autenticacao/cadastrar",
                 "/v1/autenticacao/enviar-codigo-verificao",
-                "/error/**")
+                "/error/**"
+            )
             .permitAll()
             .requestMatchers(
                 HttpMethod.POST,
-                "/v1/usuarios")
+                "/v1/usuarios"
+            )
             .permitAll()
             .anyRequest()
             .authenticated()
@@ -86,7 +88,8 @@ class SecurityConfig {
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(
                 jwtAuthFilter,
-                UsernamePasswordAuthenticationFilter::class.java)
+                UsernamePasswordAuthenticationFilter::class.java
+            )
         return http.build()
     }
 }

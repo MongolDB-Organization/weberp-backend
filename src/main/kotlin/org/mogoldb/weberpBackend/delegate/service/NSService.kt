@@ -1,5 +1,6 @@
 package org.mogoldb.weberpBackend.delegate.service
 
+import jakarta.transaction.Transactional
 import org.mogoldb.weberpBackend.delegate.entity.NSEntity
 import org.mogoldb.weberpBackend.delegate.repository.NSRepository
 import org.mogoldb.weberpBackend.entity.Usuario
@@ -25,6 +26,7 @@ abstract class NSService<OB : NSEntity>(@Autowired private val repository: NSRep
         return usuarioRepository.findByEmail(email).get()
     }
 
+    @Transactional
     open fun findAll(): List<OB> = repository.findAll()
 
     open fun findById(id: Long): OB? {

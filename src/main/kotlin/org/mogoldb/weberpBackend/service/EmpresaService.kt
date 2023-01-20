@@ -2,7 +2,6 @@ package org.mogoldb.weberpBackend.service
 
 import org.mogoldb.weberpBackend.delegate.service.NSContratoLevelService
 import org.mogoldb.weberpBackend.entity.Empresa
-import org.mogoldb.weberpBackend.exception.BadRequestException
 import org.mogoldb.weberpBackend.exception.DuplicateEntryException
 import org.mogoldb.weberpBackend.exception.NotFoundException
 import org.mogoldb.weberpBackend.repository.EmpresaRepository
@@ -49,14 +48,14 @@ class EmpresaService(@Autowired private val repository: EmpresaRepository) : NSC
     override fun create(obj: Empresa): Empresa {
         val contrato = contratoService.findById(obj.contrato!!.codigo)
             ?: throw NotFoundException("Contrato não encontrado")
-        val licenca = contrato.licenca ?: throw BadRequestException("Contrato ainda não possui uma licença")
-        val dataVencimentoContrato = licenca.dataVencimento ?: throw BadRequestException("A lincença do contrato não possui uma data de vencimento")
-        if (LocalDateTime.now().isAfter(dataVencimentoContrato)) {
-            throw BadRequestException("Licença expirada")
-        }
-        if (licenca.quantidadeEmpresas!! >= buscarQuantidadeEmpresasPorLicenca(licenca.codigo).toInt()) {
-            throw BadRequestException("Limite de empresas cadastradas atingido")
-        }
+//        val licenca = contrato.licenca ?: throw BadRequestException("Contrato ainda não possui uma licença")
+//        val dataVencimentoContrato = licenca.dataVencimento ?: throw BadRequestException("A lincença do contrato não possui uma data de vencimento")
+//        if (LocalDateTime.now().isAfter(dataVencimentoContrato)) {
+//            throw BadRequestException("Licença expirada")
+//        }
+//        if (licenca.quantidadeEmpresas!! >= buscarQuantidadeEmpresasPorLicenca(licenca.codigo).toInt()) {
+//            throw BadRequestException("Limite de empresas cadastradas atingido")
+//        }
         return super.create(obj)
     }
 }

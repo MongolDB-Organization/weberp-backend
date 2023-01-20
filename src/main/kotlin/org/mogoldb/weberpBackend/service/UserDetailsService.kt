@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class UserDetailsService(@Autowired val usuarioService: UsuarioService) : UserDetailsService {
+class UserDetailsService : UserDetailsService {
+
+    @Autowired
+    private lateinit var usuarioService: UsuarioService
 
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(email: String?): UserDetails {

@@ -1,13 +1,10 @@
 package org.mogoldb.weberpBackend.handler
 
 import jakarta.validation.ConstraintViolationException
-import org.mogoldb.weberpBackend.exception.BadRequestException
-import org.mogoldb.weberpBackend.exception.DuplicateEntryException
-import org.mogoldb.weberpBackend.exception.NotAcceptableException
-import org.mogoldb.weberpBackend.exception.NotFoundException
-import org.mogoldb.weberpBackend.payload.response.DuplicatedEntryErrorResponse
-import org.mogoldb.weberpBackend.payload.response.ErrorResponse
-import org.mogoldb.weberpBackend.payload.response.MultiErrorResponse
+import org.mogoldb.weberpBackend.dto.response.DuplicatedEntryErrorResponseDTO
+import org.mogoldb.weberpBackend.dto.response.ErrorResponseDTO
+import org.mogoldb.weberpBackend.dto.response.MultiErrorResponseDTO
+import org.mogoldb.weberpBackend.exception.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.FieldError
@@ -20,45 +17,49 @@ import java.util.function.Consumer
 @RestControllerAdvice
 class ControllerExceptionHandler {
 
+    companion object {
+        const val NO_MESSAGE_AVAILABLE = "Nenhuma mensagem disponível"
+    }
+
     @ExceptionHandler(NotFoundException::class)
-    fun handleNotFoundException(ex: NotFoundException): ResponseEntity<ErrorResponse> {
+    fun handleNotFoundException(ex: NotFoundException): ResponseEntity<ErrorResponseDTO> {
         val status = HttpStatus.NOT_FOUND.value()
-        val errorMessage = ErrorResponse(status, "Not Found", ex.message ?: "Nenhuma mensagem disponível")
+        val errorMessage = ErrorResponseDTO(status, "Not Found", ex.message ?: NO_MESSAGE_AVAILABLE)
         return ResponseEntity.status(status).body(errorMessage)
     }
 
     @ExceptionHandler(BadRequestException::class)
-    fun handleBadRequestException(ex: BadRequestException): ResponseEntity<ErrorResponse> {
+    fun handleBadRequestException(ex: BadRequestException): ResponseEntity<ErrorResponseDTO> {
         val status = HttpStatus.BAD_REQUEST.value()
-        val errorMessage = ErrorResponse(status, "Bad Request", ex.message)
+        val errorMessage = ErrorResponseDTO(status, "Bad Request", ex.message)
         return ResponseEntity.status(status).body(errorMessage)
     }
 
     @ExceptionHandler(NotAcceptableException::class)
-    fun handleNotAcceptableException(ex: NotAcceptableException): ResponseEntity<ErrorResponse> {
+    fun handleNotAcceptableException(ex: NotAcceptableException): ResponseEntity<ErrorResponseDTO> {
         val status = HttpStatus.NOT_ACCEPTABLE.value()
-        val errorMessage = ErrorResponse(status, "Not Acceptable", ex.message)
+        val errorMessage = ErrorResponseDTO(status, "Not Acceptable", ex.message)
         return ResponseEntity.status(status).body(errorMessage)
     }
 
     @ExceptionHandler(ConstraintViolationException::class)
-    fun handleConstraintViolationException(ex: ConstraintViolationException): ResponseEntity<ErrorResponse> {
+    fun handleConstraintViolationException(ex: ConstraintViolationException): ResponseEntity<ErrorResponseDTO> {
         val status = HttpStatus.NOT_ACCEPTABLE.value()
-        val errorMessage = ErrorResponse(status, "Not Acceptable", ex.message as String)
+        val errorMessage = ErrorResponseDTO(status, "Not Acceptable", ex.message as String)
         return ResponseEntity.status(status).body(errorMessage)
     }
 
     @ExceptionHandler(DuplicateEntryException::class)
-    fun handleDuplicateEntryException(ex: DuplicateEntryException): ResponseEntity<DuplicatedEntryErrorResponse> {
+    fun handleDuplicateEntryException(ex: DuplicateEntryException): ResponseEntity<DuplicatedEntryErrorResponseDTO> {
         val status = HttpStatus.BAD_REQUEST.value()
-        val errorMessage = DuplicatedEntryErrorResponse(
+        val errorMessage = DuplicatedEntryErrorResponseDTO(
             status, "Entrada duplicada", ex.field, "O valor deste campo não pode estar duplicado no banco de dados"
         )
         return ResponseEntity.status(status).body(errorMessage)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleMethodArgumentNotValidException(ex: MethodArgumentNotValidException): ResponseEntity<MultiErrorResponse> {
+    fun handleMethodArgumentNotValidException(ex: MethodArgumentNotValidException): ResponseEntity<MultiErrorResponseDTO> {
         val errors: MutableMap<String, String?> = HashMap()
         ex.bindingResult.allErrors.forEach(Consumer { error: ObjectError ->
             val fieldName = (error as FieldError).field
@@ -66,7 +67,16 @@ class ControllerExceptionHandler {
             errors[fieldName] = errorMessage
         })
         val status = HttpStatus.BAD_REQUEST.value()
-        val multiErrorResponse = MultiErrorResponse(status, errors, "Validation Error")
+        val multiErrorResponse = MultiErrorResponseDTO(status, errors, "Validation Error")
         return ResponseEntity.status(status).body(multiErrorResponse)
+    }
+
+    @ExceptionHandler(NoPermitionException::class)
+    fun handleNoPermitionException(ex: NoPermitionException): ResponseEntity<ErrorResponseDTO> {
+        val status = HttpStatus.BAD_REQUEST.value()
+        val errorMessage = ErrorResponseDTO(
+            status, "Sem permissão", NO_MESSAGE_AVAILABLE,
+        )
+        return ResponseEntity.status(status).body(errorMessage)
     }
 }

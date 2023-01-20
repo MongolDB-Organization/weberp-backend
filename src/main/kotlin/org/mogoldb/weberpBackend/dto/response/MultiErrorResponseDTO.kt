@@ -1,10 +1,10 @@
-package org.mogoldb.weberpBackend.payload.response
+package org.mogoldb.weberpBackend.dto.response
 
 import java.time.LocalDateTime
 
-open class ErrorResponse(
+open class MultiErrorResponseDTO(
     val status: Int,
-    val error: String,
+    val errors: MutableMap<String, String?>,
     val message: String,
     val timestamp: LocalDateTime = LocalDateTime.now(),
 )
