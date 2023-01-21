@@ -5,7 +5,7 @@ import org.mogoldb.weberpBackend.dto.request.EmpresaCreateDto
 import org.mogoldb.weberpBackend.dto.request.EmpresaUpdateDto
 import org.mogoldb.weberpBackend.dto.response.EmpresaDetailedDto
 import org.mogoldb.weberpBackend.dto.response.EmpresaDto
-import org.mogoldb.weberpBackend.service.EmpresaService
+import org.mogoldb.weberpBackend.service.impl.EmpresaServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 class EmpresaController {
 
     @Autowired
-    lateinit var service: EmpresaService
+    lateinit var service: EmpresaServiceImpl
 
     @GetMapping
     fun index(): List<EmpresaDto> {
