@@ -4,7 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.mogoldb.weberpBackend.service.UserDetailsService
+import org.mogoldb.weberpBackend.service.impl.UserDetailsServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtAuthFilter(
-    @Autowired private val autenticacaoService: UserDetailsService,
+    @Autowired private val autenticacaoService: UserDetailsServiceImpl,
     @Autowired private val jwtTokenUtil: JwtTokenUtil,
 ) : OncePerRequestFilter() {
 

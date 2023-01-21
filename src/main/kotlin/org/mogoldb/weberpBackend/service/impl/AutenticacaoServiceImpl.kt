@@ -10,7 +10,6 @@ import org.mogoldb.weberpBackend.mail.EmailDetails
 import org.mogoldb.weberpBackend.mail.EmailService
 import org.mogoldb.weberpBackend.repository.UsuarioRepository
 import org.mogoldb.weberpBackend.service.AutenticacaoService
-import org.mogoldb.weberpBackend.service.UserDetailsService
 import org.mogoldb.weberpBackend.util.VerificationCodeUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
@@ -27,7 +26,7 @@ class AutenticacaoServiceImpl : AutenticacaoService {
     private lateinit var authenticationManager: AuthenticationManager
 
     @Autowired
-    private lateinit var autenticacaoService: UserDetailsService
+    private lateinit var autenticacaoService: UserDetailsServiceImpl
 
     @Autowired
     private lateinit var usuarioRepository: UsuarioRepository
