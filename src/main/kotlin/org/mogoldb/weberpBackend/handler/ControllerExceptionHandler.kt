@@ -75,7 +75,7 @@ class ControllerExceptionHandler {
     fun handleNoPermitionException(ex: NoPermitionException): ResponseEntity<ErrorResponseDTO> {
         val status = HttpStatus.BAD_REQUEST.value()
         val errorMessage = ErrorResponseDTO(
-            status, "Sem permissão", NO_MESSAGE_AVAILABLE,
+            status, "Sem permissão", ex.message ?: NO_MESSAGE_AVAILABLE,
         )
         return ResponseEntity.status(status).body(errorMessage)
     }

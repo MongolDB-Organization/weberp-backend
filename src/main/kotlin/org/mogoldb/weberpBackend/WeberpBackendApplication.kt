@@ -8,5 +8,5 @@ import org.springframework.boot.runApplication
 class WeberpBackendApplication
 
 fun main(args: Array<String>) {
-	runApplication<WeberpBackendApplication>(*args)
+    runApplication<WeberpBackendApplication>(*args)
 }

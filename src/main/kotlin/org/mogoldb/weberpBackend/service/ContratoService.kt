@@ -42,7 +42,7 @@ class ContratoService(@Autowired private val repository: ContratoRepository) : N
             return super.findById(id)
         }
         val contratoOptionalFound =  repository.findById(id)
-        if (contratoOptionalFound.isEmpty) {
+        if (!contratoOptionalFound.isPresent) {
             throw NotFoundException()
         }
         if (contratoOptionalFound.get().usuarioProprietario?.codigo != loggedUser?.codigo) {

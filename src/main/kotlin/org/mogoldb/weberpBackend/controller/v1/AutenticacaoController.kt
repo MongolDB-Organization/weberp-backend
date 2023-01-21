@@ -1,7 +1,6 @@
 package org.mogoldb.weberpBackend.controller.v1
 
 import jakarta.validation.Valid
-import org.mogoldb.weberpBackend.controller.v1.autenticacao.dto.*
 import org.mogoldb.weberpBackend.dto.request.AutenticacaoEntrarDto
 import org.mogoldb.weberpBackend.dto.request.AutenticacaoSendVerificationCodeDto
 import org.mogoldb.weberpBackend.dto.request.AutenticacaoSignupDto
