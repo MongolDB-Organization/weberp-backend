@@ -15,7 +15,6 @@ import org.mogoldb.weberpBackend.repository.ContratoRepository
 import org.mogoldb.weberpBackend.repository.EmpresaRepository
 import org.mogoldb.weberpBackend.repository.UsuarioRepository
 import org.mogoldb.weberpBackend.service.EmpresaService
-import org.mogoldb.weberpBackend.service.LoggedUserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -32,7 +31,7 @@ class EmpresaServiceImpl(@Autowired private val repository: EmpresaRepository) :
     private lateinit var usuarioRepository: UsuarioRepository
 
     @Autowired
-    private lateinit var userLoggedUserService: LoggedUserService
+    private lateinit var userLoggedUserService: LoggedUserServiceImpl
 
     override fun findAll(): List<EmpresaDto> {
         return repository.findAll().map<Empresa, EmpresaDto> { it -> it.toDto() }

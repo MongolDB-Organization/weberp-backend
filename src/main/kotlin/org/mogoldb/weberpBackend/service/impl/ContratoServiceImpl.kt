@@ -11,7 +11,6 @@ import org.mogoldb.weberpBackend.exception.NoPermitionException
 import org.mogoldb.weberpBackend.exception.NotFoundException
 import org.mogoldb.weberpBackend.repository.ContratoRepository
 import org.mogoldb.weberpBackend.service.ContratoService
-import org.mogoldb.weberpBackend.service.LoggedUserService
 import org.mogoldb.weberpBackend.service.UsuarioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -25,7 +24,7 @@ class ContratoServiceImpl(@Autowired private val repository: ContratoRepository)
     private lateinit var usuarioService: UsuarioService
 
     @Autowired
-    private lateinit var userLoggedUserService: LoggedUserService
+    private lateinit var userLoggedUserService: LoggedUserServiceImpl
 
     override fun findAll(): List<ContratoDto> {
         return repository.findAll().map { it -> it.toDto() }
