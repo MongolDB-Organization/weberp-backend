@@ -1,6 +1,9 @@
 package org.mogoldb.weberpBackend.dto.response
 
+import org.mogoldb.weberpBackend.dto.mapper.toDto
+import org.mogoldb.weberpBackend.entity.Contrato
 import org.mogoldb.weberpBackend.entity.Empresa
+import org.mogoldb.weberpBackend.entity.Usuario
 import java.time.LocalDateTime
 
 data class ContratoDetailedDto(
@@ -11,4 +14,21 @@ data class ContratoDetailedDto(
     var usuarioAtualizacao: UsuarioDto? = null,
     var dataCriacao: LocalDateTime? = null,
     var dataModificacao: LocalDateTime? = null
-) : ContratoDto()
+) : ContratoDto() {
+
+    companion object {
+        fun Contrato.toDetailedDto(): ContratoDetailedDto {
+            val detailedDto = ContratoDetailedDto()
+            detailedDto.codigo = codigo
+            detailedDto.nome = nome
+            detailedDto.empresas = empresas
+            detailedDto.usuarioProprietario = usuarioProprietario?.toDto()
+            detailedDto.usuarioCriacao = usuarioCriacao?.toDto()
+            detailedDto.usuarioAtualizacao = usuarioAtualizacao?.toDto()
+            detailedDto.usuarios = usuarios.map<Usuario, UsuarioDto> { it -> it.toDto() }.toMutableList()
+            detailedDto.dataCriacao = dataCriacao
+            detailedDto.dataModificacao = dataModificacao
+            return detailedDto
+        }
+    }
+}

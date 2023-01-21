@@ -1,10 +1,11 @@
 package org.mogoldb.weberpBackend.controller.v1
 
 import jakarta.validation.Valid
-import org.mogoldb.weberpBackend.dto.request.ContratoCreateUpdateDto
+import org.mogoldb.weberpBackend.dto.request.ContratoCreateDto
+import org.mogoldb.weberpBackend.dto.request.ContratoUpdateDto
 import org.mogoldb.weberpBackend.dto.response.ContratoDetailedDto
 import org.mogoldb.weberpBackend.dto.response.ContratoDto
-import org.mogoldb.weberpBackend.service.ContratoService
+import org.mogoldb.weberpBackend.service.impl.ContratoServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.http.ResponseEntity
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 class ContratoController {
 
     @Autowired
-    lateinit var service: ContratoService
+    lateinit var service: ContratoServiceImpl
 
     @GetMapping
     fun index(): List<ContratoDto> {
@@ -28,13 +29,13 @@ class ContratoController {
     }
 
     @PostMapping
-    private fun store(@Valid @RequestBody body: ContratoCreateUpdateDto): ResponseEntity<ContratoDetailedDto> {
+    private fun store(@Valid @RequestBody body: ContratoCreateDto): ResponseEntity<ContratoDetailedDto> {
         return ResponseEntity.ok(service.create(body))
     }
 
     @PutMapping("/{id}")
     @Throws(NotFoundException::class)
-    private fun update(@Valid @RequestBody body: ContratoCreateUpdateDto, @PathVariable(name = "id") id: Long): ResponseEntity<ContratoDetailedDto> {
-        return ResponseEntity.ok(service.update(body, id))
+    private fun update(@Valid @RequestBody body: ContratoUpdateDto, @PathVariable(name = "id") id: Long): ResponseEntity<ContratoDetailedDto> {
+        return ResponseEntity.ok(service.update(id, body))
     }
 }

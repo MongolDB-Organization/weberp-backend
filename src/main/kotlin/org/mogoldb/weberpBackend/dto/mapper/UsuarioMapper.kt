@@ -2,9 +2,9 @@ package org.mogoldb.weberpBackend.dto.mapper
 
 import org.mogoldb.weberpBackend.dto.response.ContratoDto
 import org.mogoldb.weberpBackend.dto.request.UsuarioCreateUpdateDto
+import org.mogoldb.weberpBackend.dto.response.ContratoDto.Companion.toDto
 import org.mogoldb.weberpBackend.dto.response.UsuarioDetailedDto
 import org.mogoldb.weberpBackend.dto.response.UsuarioDto
-import org.mogoldb.weberpBackend.dto.mapper.ContratoMapper.Companion.toDto
 import org.mogoldb.weberpBackend.entity.Contrato
 import org.mogoldb.weberpBackend.entity.Usuario
 

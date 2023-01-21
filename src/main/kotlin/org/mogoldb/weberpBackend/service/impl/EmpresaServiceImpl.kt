@@ -81,20 +81,20 @@ class EmpresaServiceImpl(@Autowired private val repository: EmpresaRepository) :
 
     @OptIn(ExperimentalStdlibApi::class)
     @Throws(NotFoundException::class, NoPermitionException::class, DuplicateEntryException::class)
-    override fun update(id: Long, empresaDto: EmpresaUpdateDto): EmpresaDetailedDto {
+    override fun update(id: Long, dto: EmpresaUpdateDto): EmpresaDetailedDto {
         var empresa = repository.findById(id).getOrNull() ?: throw NotFoundException()
         var loggedUser = userLoggedUserService.getLoggedUser()
-        if (loggedUser!!.codigo!! != empresa.contrato!!.codigo) {
+        if (loggedUser!!.codigo != empresa.contrato!!.codigo) {
             throw NoPermitionException("Somente o proprietário do contrato pode atualizar a empresa")
         }
-        if (empresaDto.cnpj != empresa.cnpj && repository.findByCnpj(empresaDto.cnpj!!).isPresent) {
-            throw DuplicateEntryException(empresaDto::cnpj.name)
+        if (dto.cnpj != empresa.cnpj && repository.findByCnpj(dto.cnpj!!).isPresent) {
+            throw DuplicateEntryException(dto::cnpj.name)
         }
-        if (empresaDto.incricaoEstadual != empresa.incricaoEstadual && repository.findByInscricaoEstadual(empresaDto.incricaoEstadual!!).isPresent) {
-            throw DuplicateEntryException(empresaDto::incricaoEstadual.name)
+        if (dto.incricaoEstadual != empresa.incricaoEstadual && repository.findByInscricaoEstadual(dto.incricaoEstadual!!).isPresent) {
+            throw DuplicateEntryException(dto::incricaoEstadual.name)
         }
         val empresaCodigo = empresa.codigo
-        empresa = empresaDto.toEntity(empresa)
+        empresa = dto.toEntity(empresa)
         empresa.codigo = empresaCodigo
         return repository.save(empresa).toDetailedDto()
     }
