@@ -1,7 +1,7 @@
 package org.mogoldb.weberpBackend.dto.response
 
-import org.mogoldb.weberpBackend.dto.mapper.ContratoMapper.Companion.toDto
-import org.mogoldb.weberpBackend.dto.mapper.toDto
+import org.mogoldb.weberpBackend.dto.response.ContratoDto.Companion.toDto
+import org.mogoldb.weberpBackend.dto.response.UsuarioDto.Companion.toDto
 import org.mogoldb.weberpBackend.entity.Empresa
 import java.time.LocalDateTime
 

@@ -9,7 +9,7 @@ import org.mogoldb.weberpBackend.dto.response.AutenticaocaTokenDto
 import org.mogoldb.weberpBackend.exception.BadRequestException
 import org.mogoldb.weberpBackend.exception.NotFoundException
 import org.mogoldb.weberpBackend.dto.response.SuccessResponseDTO
-import org.mogoldb.weberpBackend.service.AutenticacaoService
+import org.mogoldb.weberpBackend.service.impl.AutenticacaoServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("v1/autenticacao")
 class AutenticacaoController {
     @Autowired
-    lateinit var service: AutenticacaoService
+    lateinit var service: AutenticacaoServiceImpl
 
     @PostMapping("/entrar")
     private fun signin(@Valid @RequestBody body: AutenticacaoEntrarDto): ResponseEntity<AutenticaocaTokenDto> {

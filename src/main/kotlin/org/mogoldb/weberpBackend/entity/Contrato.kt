@@ -14,18 +14,18 @@ data class Contrato(
     override var codigo: Long = 0,
 
     @Column(nullable = false)
-    open var nome: String = "",
+    var nome: String = "",
 
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], targetEntity = Empresa::class)
     @JoinColumn(name = "contrato_codigo")
-    open var empresas: Set<Empresa> = HashSet<Empresa>(),
+    var empresas: Set<Empresa> = HashSet<Empresa>(),
 
-    @OneToOne open var licenca: Licenca? = null,
+    @OneToOne var licenca: Licenca? = null,
     @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST], targetEntity = Usuario::class, mappedBy = "contratos")
-    open var usuarios: MutableList<Usuario> = arrayListOf<Usuario>(),
+    var usuarios: MutableList<Usuario> = arrayListOf<Usuario>(),
 
     @OneToOne(fetch = FetchType.LAZY)
-    open var usuarioProprietario: Usuario? = null,
+    var usuarioProprietario: Usuario? = null,
 
     @OneToOne(fetch = FetchType.LAZY)
     override var usuarioCriacao: Usuario? = null,

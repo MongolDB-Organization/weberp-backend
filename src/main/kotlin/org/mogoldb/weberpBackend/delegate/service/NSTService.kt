@@ -4,7 +4,7 @@ import org.mogoldb.weberpBackend.delegate.entity.NSEntity
 import org.mogoldb.weberpBackend.delegate.repository.NSRepository
 import org.mogoldb.weberpBackend.entity.Usuario
 import org.mogoldb.weberpBackend.exception.NotFoundException
-import org.mogoldb.weberpBackend.service.LoggedUserService
+import org.mogoldb.weberpBackend.service.impl.LoggedUserServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.jvm.optionals.getOrNull
 
@@ -21,7 +21,7 @@ abstract class NSTService<OB : NSEntity, DTO, D_DTO, S_DTO>(@Autowired private v
     }
 
     @Autowired
-    private lateinit var loggedUserService: LoggedUserService
+    private lateinit var loggedUserService: LoggedUserServiceImpl
 
     open fun getLoggedUser(): Usuario? = loggedUserService.getLoggedUser()
 
