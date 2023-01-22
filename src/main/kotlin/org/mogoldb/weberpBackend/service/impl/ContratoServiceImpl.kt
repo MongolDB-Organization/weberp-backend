@@ -10,6 +10,7 @@ import org.mogoldb.weberpBackend.exception.BadRequestException
 import org.mogoldb.weberpBackend.exception.NoPermitionException
 import org.mogoldb.weberpBackend.exception.NotFoundException
 import org.mogoldb.weberpBackend.repository.ContratoRepository
+import org.mogoldb.weberpBackend.repository.UsuarioRepository
 import org.mogoldb.weberpBackend.service.ContratoService
 import org.mogoldb.weberpBackend.service.UsuarioService
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,7 +22,7 @@ import kotlin.jvm.optionals.getOrNull
 class ContratoServiceImpl(@Autowired private val repository: ContratoRepository) : ContratoService {
 
     @Autowired
-    private lateinit var usuarioService: UsuarioService
+    private lateinit var usuarioRepository: UsuarioRepository
 
     @Autowired
     private lateinit var userLoggedUserService: LoggedUserServiceImpl
@@ -35,7 +36,7 @@ class ContratoServiceImpl(@Autowired private val repository: ContratoRepository)
     override fun findById(id: Long): ContratoDetailedDto {
         val loggedUser = userLoggedUserService.getLoggedUser()
         val contrato = repository.findById(id).getOrNull() ?: throw NotFoundException()
-        val hasAcesso = usuarioService.getContratosCodigos(loggedUser!!).contains(loggedUser.codigo)
+        val hasAcesso = usuarioRepository.getContratosCodigos(loggedUser!!.codigo).contains(loggedUser.codigo)
         val isProprietario = contrato.usuarioProprietario!!.codigo == loggedUser.codigo
         val isAdministrador = loggedUser.administrador
         if (!hasAcesso && !isProprietario && !isAdministrador) {
