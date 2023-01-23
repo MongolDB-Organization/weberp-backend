@@ -5,7 +5,7 @@ import org.mogoldb.weberpBackend.dto.response.CidadeUfDto
 import org.mogoldb.weberpBackend.dto.response.PageableDto
 
 interface CidadeUfService {
-    fun findAll(page: Int?, size: Int?, descricao: String?): PageableDto<CidadeUfDto>
+    fun findAll(page: Int?, size: Int?, descricao: String?, sigla: String?): PageableDto<CidadeUfDto>
 
     fun findById(id: Long) : CidadeUfDetailedDto
 }

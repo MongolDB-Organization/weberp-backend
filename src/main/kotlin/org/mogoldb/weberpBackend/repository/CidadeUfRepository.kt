@@ -7,5 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface CidadeUfRepository : JpaRepository<CidadeUf, Long> {
 
-    fun findAllByDescricaoContainingIgnoreCase(descricao: String, pageable: Pageable) : Page<CidadeUf>
+    fun findAllByEstadoUfSigla(sigla: String, pageable: Pageable): Page<CidadeUf>
+
+    fun findAllByDescricaoContainingIgnoreCase(descricao: String, pageable: Pageable): Page<CidadeUf>
+
+    fun findAllByDescricaoContainingIgnoreCaseAndEstadoUfSigla(descricao: String, sigla: String, pageable: Pageable): Page<CidadeUf>
 }

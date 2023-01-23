@@ -24,9 +24,13 @@ class CidadeUfServiceImpl : CidadeUfService {
     @Autowired
     private lateinit var repository: CidadeUfRepository
 
-    override fun findAll(page: Int?, size: Int?, descricao: String?): PageableDto<CidadeUfDto> {
+    override fun findAll(page: Int?, size: Int?, descricao: String?, sigla: String?): PageableDto<CidadeUfDto> {
         val pageable: Pageable = PageRequest.of(page ?: 0, size ?: 20)
-        val pageResults: Page<CidadeUf> = if (!descricao.isNullOrBlank()) {
+        val pageResults: Page<CidadeUf> = if (!sigla.isNullOrBlank() && !descricao.isNullOrBlank()) {
+            repository.findAllByDescricaoContainingIgnoreCaseAndEstadoUfSigla(descricao, sigla, pageable)
+        } else if (!sigla.isNullOrBlank()) {
+            repository.findAllByEstadoUfSigla(sigla, pageable)
+        } else if (!descricao.isNullOrBlank()) {
             repository.findAllByDescricaoContainingIgnoreCase(descricao, pageable)
         } else {
             repository.findAll(pageable)

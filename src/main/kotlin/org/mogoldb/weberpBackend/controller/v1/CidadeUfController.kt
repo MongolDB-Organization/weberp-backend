@@ -20,8 +20,13 @@ class CidadeUfController {
     private lateinit var service: CidadeUfServiceImpl
 
     @GetMapping
-    fun index(@RequestParam("page") page: Int?, @RequestParam("size") size: Int?, @RequestParam("descricao") descricao: String?): ResponseEntity<PageableDto<CidadeUfDto>> {
-        return ResponseEntity.ok(service.findAll(page, size, descricao))
+    fun index(
+        @RequestParam("page") page: Int?,
+        @RequestParam("size") size: Int?,
+        @RequestParam("descricao") descricao: String?,
+        @RequestParam("sigla") sigla: String?
+    ): ResponseEntity<PageableDto<CidadeUfDto>> {
+        return ResponseEntity.ok(service.findAll(page, size, descricao, sigla))
     }
 
     @GetMapping("{id}")
