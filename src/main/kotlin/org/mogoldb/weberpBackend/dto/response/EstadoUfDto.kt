@@ -16,7 +16,6 @@ data class EstadoUfDto(
             dto.sigla = sigla
             dto.codigoIbge = codigoIbge
             return dto
-            return dto
         }
     }
 }

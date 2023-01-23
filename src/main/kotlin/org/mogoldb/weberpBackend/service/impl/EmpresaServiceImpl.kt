@@ -62,7 +62,7 @@ class EmpresaServiceImpl(@Autowired private val repository: EmpresaRepository) :
         if (LocalDateTime.now().isAfter(contrato.licenca!!.dataVencimento!!)) {
             throw BadRequestException("Licença do contrato expirada")
         }
-        if (contrato.licenca!!.quantidadeEmpresas!! <= repository.buscarQuantidadeEmpresaPorLicenca(contrato.licenca!!.codigo!!)) {
+        if (contrato.licenca!!.quantidadeEmpresas!! <= repository.buscarQuantidadeEmpresaPorLicenca(contrato.licenca!!.codigo)) {
             throw BadRequestException("Limite de empresas cadastradas atingido")
         }
         val empresa = empresaDto.toEntity()
@@ -82,7 +82,7 @@ class EmpresaServiceImpl(@Autowired private val repository: EmpresaRepository) :
     @Throws(NotFoundException::class, NoPermitionException::class, DuplicateEntryException::class)
     override fun update(id: Long, dto: EmpresaUpdateDto): EmpresaDetailedDto {
         var empresa = repository.findById(id).getOrNull() ?: throw NotFoundException()
-        var loggedUser = userLoggedUserService.getLoggedUser()
+        val loggedUser = userLoggedUserService.getLoggedUser()
         if (loggedUser!!.codigo != empresa.contrato!!.codigo) {
             throw NoPermitionException("Somente o proprietário do contrato pode atualizar a empresa")
         }
