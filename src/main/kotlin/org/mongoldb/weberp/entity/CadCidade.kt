@@ -1,21 +1,20 @@
 package org.mongoldb.weberp.entity
 
 import jakarta.persistence.*
-import org.mongoldb.weberp.entity.EstadoUf
 
 @Entity
-@Table(name = "cidade_uf")
-open class CidadeUf(
+@Table(name = "cad_cidade")
+open class CadCidade(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    open var codigo: Long = 0,
-
-    @Column(unique = true, nullable = false, updatable = false)
-    open var codigoIbge: Long = 0,
+    open var codigo: Long = 0L,
 
     @Column(nullable = false, updatable = false)
     open var descricao: String = "",
 
+    @Column(unique = true, nullable = false, updatable = false)
+    open var ibge: Long = 0L,
+
     @ManyToOne
     @JoinColumn(nullable = false, updatable = false)
-    open var estadoUf: EstadoUf = EstadoUf(),
+    open var cadEstado: CadEstado = CadEstado(),
 )

@@ -3,8 +3,8 @@ package org.mongoldb.weberp.entity
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "estado_uf")
-open class EstadoUf(
+@Table(name = "cad_estado")
+open class CadEstado(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var codigo: Long = 0L,
 
@@ -12,8 +12,8 @@ open class EstadoUf(
     open var descricao: String = "",
 
     @Column(length = 2, unique = true, nullable = false, updatable = false)
-    open var sigla: String = "",
+    open var uf: String = "",
 
     @Column(unique = true, nullable = false, updatable = false)
-    open var codigoIbge: Long = 0L,
+    open var ibge: Long = 0L,
 )

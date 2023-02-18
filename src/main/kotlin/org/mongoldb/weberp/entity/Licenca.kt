@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "licenca")
 open class Licenca(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) override var codigo: Long = 0,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) override var codigo: Long = 0L,
     @Column(nullable = false) @get: NotNull open var dataInicio: LocalDateTime?,
     @Column(nullable = false) @get: NotNull open var dataVencimento: LocalDateTime?,
     @Column(nullable = false) @get: NotNull open var quantidadeDias: Int?,

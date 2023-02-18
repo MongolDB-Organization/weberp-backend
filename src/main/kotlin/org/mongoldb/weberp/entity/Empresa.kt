@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 open class Empresa(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    override var codigo: Long = 0,
+    override var codigo: Long = 0L,
 
     @Column(nullable = false)
     open var razaoSocial: String = "",

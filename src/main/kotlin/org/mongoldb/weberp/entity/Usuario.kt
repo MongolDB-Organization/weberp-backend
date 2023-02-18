@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 @Table(name = "usuario")
 open class Usuario(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    override var codigo: Long = 0,
+    override var codigo: Long = 0L,
 
     @Column(nullable = false)
     open var nome: String? = null,
