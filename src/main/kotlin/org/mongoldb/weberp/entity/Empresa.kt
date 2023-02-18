@@ -36,10 +36,10 @@ open class Empresa(
     override var contrato: Contrato? = null,
 
     @OneToOne
-    override var usuarioAtualizacao: Usuario? = null,
+    override var cadUsuarioAtualizacao: CadUsuario? = null,
 
     @OneToOne
-    override var usuarioCriacao: Usuario? = null,
+    override var cadUsuarioCriacao: CadUsuario? = null,
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

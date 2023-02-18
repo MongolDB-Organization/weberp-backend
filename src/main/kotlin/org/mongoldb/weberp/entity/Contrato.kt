@@ -8,15 +8,6 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "contrato")
-@NamedEntityGraph(name = "Contrato.clean",
-    attributeNodes = [
-        NamedAttributeNode("empresas"),
-        NamedAttributeNode("licenca"),
-        NamedAttributeNode("usuarios"),
-        NamedAttributeNode("usuarioCriacao"),
-        NamedAttributeNode("usuarioProprietario"),
-        NamedAttributeNode("usuarioAtualizacao"),
-    ])
 data class Contrato(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,17 +21,17 @@ data class Contrato(
     var empresas: Set<Empresa> = HashSet<Empresa>(),
 
     @OneToOne var licenca: Licenca? = null,
-    @ManyToMany(cascade = [CascadeType.PERSIST], targetEntity = Usuario::class, mappedBy = "contratos")
-    var usuarios: MutableList<Usuario> = arrayListOf<Usuario>(),
+    @ManyToMany(cascade = [CascadeType.PERSIST], targetEntity = CadUsuario::class, mappedBy = "contratos")
+    var cadUsuarios: MutableList<CadUsuario> = arrayListOf<CadUsuario>(),
 
     @OneToOne()
-    var usuarioProprietario: Usuario? = null,
+    var cadUsuarioProprietario: CadUsuario? = null,
 
     @OneToOne()
-    override var usuarioCriacao: Usuario? = null,
+    override var cadUsuarioCriacao: CadUsuario? = null,
 
     @OneToOne()
-    override var usuarioAtualizacao: Usuario? = null,
+    override var cadUsuarioAtualizacao: CadUsuario? = null,
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

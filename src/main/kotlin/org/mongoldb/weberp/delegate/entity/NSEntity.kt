@@ -1,12 +1,12 @@
 package org.mongoldb.weberp.delegate.entity
 
-import org.mongoldb.weberp.entity.Usuario
+import org.mongoldb.weberp.entity.CadUsuario
 import java.time.LocalDateTime
 
 interface NSEntity {
     var codigo: Long;
-    var usuarioAtualizacao: Usuario?
-    var usuarioCriacao: Usuario?
+    var cadUsuarioAtualizacao: CadUsuario?
+    var cadUsuarioCriacao: CadUsuario?
     var dataCriacao: LocalDateTime?
     var dataModificacao: LocalDateTime?
 }

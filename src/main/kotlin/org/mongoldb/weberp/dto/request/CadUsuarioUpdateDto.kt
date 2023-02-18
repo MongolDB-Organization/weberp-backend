@@ -2,9 +2,9 @@ package org.mongoldb.weberp.dto.request
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import org.mongoldb.weberp.entity.Usuario
+import org.mongoldb.weberp.entity.CadUsuario
 
-data class UsuarioUpdateDto(
+data class CadUsuarioUpdateDto(
     @get: NotBlank
     var nome: String? = null,
 
@@ -15,8 +15,8 @@ data class UsuarioUpdateDto(
     var telefone: String? = null,
 ) {
 
-    fun toEntity(mergeEntity: Usuario?): Usuario {
-        val entity = mergeEntity ?: Usuario()
+    fun toEntity(mergeEntity: CadUsuario?): CadUsuario {
+        val entity = mergeEntity ?: CadUsuario()
         entity.nome = nome
         entity.email = email
         entity.telefone = telefone

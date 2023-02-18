@@ -3,9 +3,9 @@ package org.mongoldb.weberp.delegate.service
 import jakarta.transaction.Transactional
 import org.mongoldb.weberp.delegate.entity.NSEntity
 import org.mongoldb.weberp.delegate.repository.NSRepository
-import org.mongoldb.weberp.entity.Usuario
+import org.mongoldb.weberp.entity.CadUsuario
 import org.mongoldb.weberp.exception.NotFoundException
-import org.mongoldb.weberp.repository.UsuarioRepository
+import org.mongoldb.weberp.repository.CadUsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import kotlin.jvm.Throws
@@ -17,13 +17,13 @@ abstract class NSService<OB : NSEntity>(@Autowired private val repository: NSRep
     }
 
     @Autowired
-    lateinit var usuarioRepository: UsuarioRepository
+    lateinit var cadUsuarioRepository: CadUsuarioRepository
 
-    fun getLoggedUser(): Usuario? {
+    fun getLoggedUser(): CadUsuario? {
         val email = SecurityContextHolder.getContext().authentication.name
-        val emailQueryResult = usuarioRepository.findByEmail(email)
+        val emailQueryResult = cadUsuarioRepository.findByEmail(email)
         if (!emailQueryResult.isPresent) return null
-        return usuarioRepository.findByEmail(email).get()
+        return cadUsuarioRepository.findByEmail(email).get()
     }
 
     @Transactional
@@ -54,13 +54,13 @@ abstract class NSService<OB : NSEntity>(@Autowired private val repository: NSRep
     open fun afterCreateAndUpdate(obj: OB, idUpdate: Long?, saveType: NSServiceSaveType) {
         val loggedUser = getLoggedUser()
         if (saveType == NSServiceSaveType.CREATE) {
-            obj.usuarioCriacao = loggedUser
-            obj.usuarioAtualizacao = loggedUser
+            obj.cadUsuarioCriacao = loggedUser
+            obj.cadUsuarioAtualizacao = loggedUser
         } else if (saveType == NSServiceSaveType.UPDATE) {
             if (!repository.findById(idUpdate!!).isPresent) {
                 throw NotFoundException()
             }
-            obj.usuarioAtualizacao = loggedUser
+            obj.cadUsuarioAtualizacao = loggedUser
         }
     }
 }

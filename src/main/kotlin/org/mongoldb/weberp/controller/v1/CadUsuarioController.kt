@@ -1,11 +1,11 @@
 package org.mongoldb.weberp.controller.v1
 
 import jakarta.validation.Valid
-import org.mongoldb.weberp.dto.request.UsuarioUpdateDto
-import org.mongoldb.weberp.dto.response.UsuarioDetailedDto
-import org.mongoldb.weberp.dto.response.UsuarioDto
+import org.mongoldb.weberp.dto.request.CadUsuarioUpdateDto
+import org.mongoldb.weberp.dto.response.CadUsuarioDetailedDto
+import org.mongoldb.weberp.dto.response.CadUsuarioDto
 import org.mongoldb.weberp.exception.NotFoundException
-import org.mongoldb.weberp.service.impl.UsuarioServiceImpl
+import org.mongoldb.weberp.service.impl.CadUsuarioServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -17,25 +17,25 @@ import org.springframework.web.bind.annotation.RestController
 import kotlin.jvm.Throws
 
 @RestController
-@RequestMapping("v1/usuarios")
-class UsuarioController {
+@RequestMapping("v1/cad-usuarios")
+class CadUsuarioController {
 
     @Autowired
-    lateinit var service: UsuarioServiceImpl
+    lateinit var service: CadUsuarioServiceImpl
 
     @GetMapping
-    fun index(): List<UsuarioDto> {
+    fun index(): List<CadUsuarioDto> {
         return service.findAll()
     }
 
     @GetMapping("/{id}")
-    private fun show(@PathVariable(name = "id") id: Long): UsuarioDetailedDto {
+    private fun show(@PathVariable(name = "id") id: Long): CadUsuarioDetailedDto {
         return service.findById(id)
     }
 
     @PutMapping("/{id}")
     @Throws(NotFoundException::class)
-    private fun update(@Valid @RequestBody body: UsuarioUpdateDto, @PathVariable(name = "id") id: Long): ResponseEntity<UsuarioDetailedDto> {
+    private fun update(@Valid @RequestBody body: CadUsuarioUpdateDto, @PathVariable(name = "id") id: Long): ResponseEntity<CadUsuarioDetailedDto> {
         return ResponseEntity.ok().body(service.update(id, body))
     }
 }

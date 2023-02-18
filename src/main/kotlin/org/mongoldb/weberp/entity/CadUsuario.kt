@@ -9,8 +9,8 @@ import org.mongoldb.weberp.delegate.entity.NSEntity
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "usuario")
-open class Usuario(
+@Table(name = "cad_usuario")
+open class CadUsuario(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var codigo: Long = 0L,
 
@@ -36,7 +36,7 @@ open class Usuario(
     open var verificado: Boolean = false,
 
     @ManyToMany(targetEntity = Contrato::class, fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
-    @JoinTable(name = "usuarios_contratos", joinColumns = [JoinColumn(name = "usuarios_codigo")], inverseJoinColumns = [JoinColumn(name = "contratos_codigo")])
+    @JoinTable(name = "sis_contrato_usuario", joinColumns = [JoinColumn(name = "cad_usuario_codigo")], inverseJoinColumns = [JoinColumn(name = "sis_contrato_codigo")])
     open var contratos: Set<Contrato> = HashSet<Contrato>(),
 
     @ManyToMany(targetEntity = Empresa::class, fetch = FetchType.LAZY)
@@ -44,11 +44,11 @@ open class Usuario(
 
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    override var usuarioAtualizacao: Usuario? = null,
+    override var cadUsuarioAtualizacao: CadUsuario? = null,
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JsonIgnore override
-    var usuarioCriacao: Usuario? = null,
+    @JsonIgnore
+    override var cadUsuarioCriacao: CadUsuario? = null,
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

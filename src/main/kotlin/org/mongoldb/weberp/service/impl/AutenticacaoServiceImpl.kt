@@ -1,14 +1,14 @@
 package org.mongoldb.weberp.service.impl
 
 import org.mongoldb.weberp.config.PasswordEncoderConfig
-import org.mongoldb.weberp.entity.Usuario
+import org.mongoldb.weberp.entity.CadUsuario
 import org.mongoldb.weberp.exception.BadRequestException
 import org.mongoldb.weberp.exception.DuplicateEntryException
 import org.mongoldb.weberp.exception.NotFoundException
 import org.mongoldb.weberp.jwt.JwtTokenUtil
 import org.mongoldb.weberp.mail.EmailDetails
 import org.mongoldb.weberp.mail.EmailService
-import org.mongoldb.weberp.repository.UsuarioRepository
+import org.mongoldb.weberp.repository.CadUsuarioRepository
 import org.mongoldb.weberp.service.AutenticacaoService
 import org.mongoldb.weberp.util.VerificationCodeUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,7 +29,7 @@ class AutenticacaoServiceImpl : AutenticacaoService {
     private lateinit var autenticacaoService: UserDetailsServiceImpl
 
     @Autowired
-    private lateinit var usuarioRepository: UsuarioRepository
+    private lateinit var cadUsuarioRepository: CadUsuarioRepository
 
     @Autowired
     private lateinit var jwtTokenUtil: JwtTokenUtil
@@ -40,9 +40,9 @@ class AutenticacaoServiceImpl : AutenticacaoService {
     @Autowired
     private lateinit var passwordEncoderConfiguration: PasswordEncoderConfig
 
-    override fun getLoggedUser(): Usuario? {
+    override fun getLoggedUser(): CadUsuario? {
         val email = SecurityContextHolder.getContext().authentication.name
-        val userOptional = usuarioRepository.findByEmail(email)
+        val userOptional = cadUsuarioRepository.findByEmail(email)
         return if (userOptional.isPresent) userOptional.get() else null
     }
 
@@ -64,17 +64,17 @@ class AutenticacaoServiceImpl : AutenticacaoService {
     }
 
     override fun signup(nome: String, email: String, password: String, telefone: String?): String {
-        val usuarioFindEmail = usuarioRepository.findByEmail(email)
+        val usuarioFindEmail = cadUsuarioRepository.findByEmail(email)
         if (usuarioFindEmail.isPresent) {
             throw DuplicateEntryException("email")
         }
-        val usuario = Usuario()
-        usuario.nome = nome
-        usuario.email = email
-        usuario.senha = passwordEncoderConfiguration.passwordEncoder()!!.encode(password)
-        usuario.telefone = telefone
-        usuario.administrador = false
-        usuarioRepository.save(usuario)
+        val cadUsuario = CadUsuario()
+        cadUsuario.nome = nome
+        cadUsuario.email = email
+        cadUsuario.senha = passwordEncoderConfiguration.passwordEncoder()!!.encode(password)
+        cadUsuario.telefone = telefone
+        cadUsuario.administrador = false
+        cadUsuarioRepository.save(cadUsuario)
         authenticateWithEmailAndPassword(email, password)
         val userDetails = autenticacaoService.loadUserByUsername(email)
         return jwtTokenUtil.generateToken(userDetails)
@@ -83,7 +83,7 @@ class AutenticacaoServiceImpl : AutenticacaoService {
     @Throws(NotFoundException::class, BadRequestException::class)
     override fun sendVerificationCode(email: String) {
         val verificationCode: String = VerificationCodeUtil.genVerifyCode()
-        val usuario = usuarioRepository.findByEmail(email).orElse(null) ?: throw NotFoundException("Usuário com este email não foi encontrado")
+        val usuario = cadUsuarioRepository.findByEmail(email).orElse(null) ?: throw NotFoundException("Usuário com este email não foi encontrado")
         val emailDetails = EmailDetails(
             email, "Seu código de verificação é $verificationCode", "Código de verificação"
         )
@@ -94,7 +94,7 @@ class AutenticacaoServiceImpl : AutenticacaoService {
             throw BadRequestException("Não foi possível enviar o email de verificação")
         }
         usuario.codigoVerificacao = verificationCode
-        usuarioRepository.save(usuario)
+        cadUsuarioRepository.save(usuario)
     }
 
     @Throws(BadRequestException::class)
@@ -108,6 +108,6 @@ class AutenticacaoServiceImpl : AutenticacaoService {
         }
         currentUser.codigoVerificacao = null
         currentUser.verificado = true
-        usuarioRepository.save(currentUser)
+        cadUsuarioRepository.save(currentUser)
     }
 }

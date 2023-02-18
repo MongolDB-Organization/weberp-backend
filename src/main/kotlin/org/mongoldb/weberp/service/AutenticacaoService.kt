@@ -1,9 +1,9 @@
 package org.mongoldb.weberp.service
 
-import org.mongoldb.weberp.entity.Usuario
+import org.mongoldb.weberp.entity.CadUsuario
 
 interface AutenticacaoService {
-    fun getLoggedUser(): Usuario?
+    fun getLoggedUser(): CadUsuario?
 
     fun authenticateWithEmailAndPassword(email: String, password: String)
 
