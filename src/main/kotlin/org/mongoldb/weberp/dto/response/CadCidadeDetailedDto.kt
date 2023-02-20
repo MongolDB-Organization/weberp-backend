@@ -13,8 +13,8 @@ class CadCidadeDetailedDto(
             dto.codigo = codigo
             dto.ibge = ibge
             dto.descricao = descricao
-            dto.uf = cadEstado.uf
-            dto.cadEstadoUf = cadEstado.toDto()
+            dto.uf = cadEstado?.uf
+            dto.cadEstadoUf = cadEstado?.toDto()
             return dto
         }
     }

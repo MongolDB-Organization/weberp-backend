@@ -1,5 +1,6 @@
 package org.mongoldb.weberp.service.impl
 
+import org.mongoldb.weberp.NSConstants
 import org.mongoldb.weberp.dto.response.CadCidadeDetailedDto
 import org.mongoldb.weberp.dto.response.CadCidadeDetailedDto.Companion.toDetailedDto
 import org.mongoldb.weberp.dto.response.CadCidadeDto
@@ -23,36 +24,27 @@ class CadCidadeServiceImpl : CadCidadeService {
     private lateinit var repository: CadCidadeRepository
 
     override fun findAll(page: Int?, size: Int?, descricao: String?, uf: String?): PageableDto<CadCidadeDto> {
-        val pageable: Pageable = PageRequest.of(page ?: 0, size ?: 20)
-
-        val cadCidade = CadCidade(descricao = descricao ?: "")
-        val matcher = ExampleMatcher.matchingAny()
-            .withIgnorePaths("codigo", "ibge", "uf")
-
+        val pageable: Pageable = PageRequest.of(page ?: NSConstants.PAGINACAO_PAGINA_INICIAL, size ?: NSConstants.PAGINACAO_TAMANHO_PADRAO)
+        val cadCidade = CadCidade()
+        val matcher = ExampleMatcher
+            .matchingAll()
+            .withIgnoreCase()
 
         if (!descricao.isNullOrBlank()) {
-            matcher
-                .withMatcher(CadCidade::descricao::name.get()) { match -> match.contains() }
-                .withMatcher(CadCidade::descricao::name.get()) { match -> match.ignoreCase() }
+            cadCidade.descricao = descricao
+            matcher.withMatcher(CadCidade::descricao::name.get()) { match ->
+                match.contains()
+            }
         }
 
         if (!uf.isNullOrBlank()) {
-            matcher
-                .withMatcher(CadCidade::cadEstado::name.get() + "." + CadEstado::uf::name::get) { match -> match.contains() }
-                .withMatcher(CadCidade::descricao::name.get()) { match -> match.ignoreCase() }
-        } else {
-            matcher.withIgnorePaths()
+            cadCidade.cadEstado = CadEstado()
+            cadCidade.cadEstado!!.uf = uf
+            matcher.withMatcher(CadCidade::cadEstado::name.get() + "." + CadEstado::uf::name.get()) { match ->
+                match.contains()
+            }
         }
 
-//        val pageResults: Page<CidadeUf> = if (!sigla.isNullOrBlank() && !descricao.isNullOrBlank()) {
-//            repository.findAllByDescricaoContainingIgnoreCaseAndEstadoUfSigla(descricao, sigla, pageable)
-//        } else if (!sigla.isNullOrBlank()) {
-//            repository.findAllByEstadoUfSigla(sigla, pageable)
-//        } else if (!descricao.isNullOrBlank()) {
-//            repository.findAllByDescricaoContainingIgnoreCase(descricao, pageable)
-//        } else {
-//            repository.findAll(pageable)
-//        }
         val pageResults = repository.findAll(Example.of(cadCidade, matcher), pageable)
         return PageableDto(pageResults.size, pageResults.number, pageResults.totalPages, pageResults.content.map { it -> it.toDto() })
     }

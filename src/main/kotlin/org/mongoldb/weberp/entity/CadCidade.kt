@@ -4,17 +4,17 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "cad_cidade")
-open class CadCidade(
+open class CadCidade {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    open var codigo: Long = 0L,
+    open var codigo: Long? = null
 
     @Column(nullable = false, updatable = false)
-    open var descricao: String = "",
+    open var descricao: String? = null
 
     @Column(unique = true, nullable = false, updatable = false)
-    open var ibge: Long = 0L,
+    open var ibge: Long? = null
 
     @ManyToOne
     @JoinColumn(nullable = false, updatable = false)
-    open var cadEstado: CadEstado = CadEstado(),
-)
+    open var cadEstado: CadEstado? = null
+}

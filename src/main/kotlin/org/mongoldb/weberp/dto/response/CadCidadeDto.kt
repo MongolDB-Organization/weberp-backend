@@ -3,10 +3,10 @@ package org.mongoldb.weberp.dto.response
 import org.mongoldb.weberp.entity.CadCidade
 
 open class CadCidadeDto(
-    var codigo: Long = 0,
-    var ibge: Long = 0,
-    var descricao: String = "",
-    var uf: String = ""
+    var codigo: Long? = null,
+    var ibge: Long? = null,
+    var descricao: String? = null,
+    var uf: String? = null
 ) {
     companion object {
         fun CadCidade.toDto(): CadCidadeDto {
@@ -14,7 +14,7 @@ open class CadCidadeDto(
             dto.codigo = codigo
             dto.ibge = ibge
             dto.descricao = descricao
-            dto.uf = cadEstado.uf
+            dto.uf = cadEstado?.uf
             return dto
         }
     }
