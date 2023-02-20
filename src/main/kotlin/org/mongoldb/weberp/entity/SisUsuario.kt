@@ -38,9 +38,6 @@ open class SisUsuario(
     @ManyToMany(targetEntity = SisContrato::class, mappedBy = "sisUsuarios", fetch = FetchType.LAZY)
     open var sisContratos: MutableList<SisContrato> = arrayListOf<SisContrato>(),
 
-    @ManyToMany(targetEntity = Empresa::class, fetch = FetchType.LAZY)
-    open var empresas: Set<Empresa> = HashSet<Empresa>(),
-
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     override var sisUsuarioAtualizacao: SisUsuario? = null,

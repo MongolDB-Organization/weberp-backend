@@ -1,12 +1,14 @@
 package org.mongoldb.weberp.dto.response
 
+import org.mongoldb.weberp.dto.response.CadEmpresaDto.Companion.toDto
+import org.mongoldb.weberp.dto.response.SisContratoDto.Companion.toDto
 import org.mongoldb.weberp.dto.response.SisUsuarioDto.Companion.toDto
 import org.mongoldb.weberp.entity.SisContrato
-import org.mongoldb.weberp.entity.Empresa
+import org.mongoldb.weberp.entity.CadEmpresa
 import java.time.LocalDateTime
 
 data class SisContratoDetailedDto(
-    var empresas: Set<Empresa> = HashSet<Empresa>(),
+    var cadEmpresas: MutableList<CadEmpresaDto> = arrayListOf<CadEmpresaDto>(),
     var sisUsuarios: MutableList<SisUsuarioDto> = arrayListOf<SisUsuarioDto>(),
     var sisUsuarioProprietario: SisUsuarioDto? = null,
     var sisUsuarioCriacao: SisUsuarioDto? = null,
@@ -20,7 +22,7 @@ data class SisContratoDetailedDto(
             val detailedDto = SisContratoDetailedDto()
             detailedDto.codigo = codigo
             detailedDto.nome = nome
-            detailedDto.empresas = empresas
+            detailedDto.cadEmpresas = cadEmpresas!!.map { it -> it.toDto() }.toMutableList()
             detailedDto.sisUsuarioProprietario = sisUsuarioProprietario?.toDto()
             detailedDto.sisUsuarioCriacao = sisUsuarioCriacao?.toDto()
             detailedDto.sisUsuarioAtualizacao = sisUsuarioAtualizacao?.toDto()

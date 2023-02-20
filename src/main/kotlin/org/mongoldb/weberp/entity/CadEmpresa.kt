@@ -7,8 +7,8 @@ import org.mongoldb.weberp.delegate.entity.NSContratoLevelEntity
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "empresa")
-open class Empresa(
+@Table(name = "cad_empresa")
+open class CadEmpresa(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var codigo: Long = 0L,
@@ -31,14 +31,14 @@ open class Empresa(
     @Column(nullable = false)
     open var telefone: String = "",
 
-    @ManyToOne(cascade = [CascadeType.REMOVE])
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "sis_contrato_codigo")
     override var sisContrato: SisContrato? = null,
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     override var sisUsuarioAtualizacao: SisUsuario? = null,
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     override var sisUsuarioCriacao: SisUsuario? = null,
 
     @Column(nullable = false, updatable = false)

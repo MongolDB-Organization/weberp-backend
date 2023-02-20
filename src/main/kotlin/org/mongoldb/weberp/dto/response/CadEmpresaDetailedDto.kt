@@ -2,20 +2,20 @@ package org.mongoldb.weberp.dto.response
 
 import org.mongoldb.weberp.dto.response.SisContratoDto.Companion.toDto
 import org.mongoldb.weberp.dto.response.SisUsuarioDto.Companion.toDto
-import org.mongoldb.weberp.entity.Empresa
+import org.mongoldb.weberp.entity.CadEmpresa
 import java.time.LocalDateTime
 
-data class EmpresaDetailedDto(
-    var contrato: SisContratoDto? = null,
+data class CadEmpresaDetailedDto(
+    var sisContrato: SisContratoDto? = null,
     var sisUsuarioAtualizacao: SisUsuarioDto? = null,
     var sisUsuarioCriacao: SisUsuarioDto? = null,
     var dataCriacao: LocalDateTime? = null,
     var dataModificacao: LocalDateTime? = null,
-) : EmpresaDto() {
+) : CadEmpresaDto() {
 
     companion object {
-        fun Empresa.toDetailedDto(): EmpresaDetailedDto {
-            val detailedDto = EmpresaDetailedDto()
+        fun CadEmpresa.toDetailedDto(): CadEmpresaDetailedDto {
+            val detailedDto = CadEmpresaDetailedDto()
             detailedDto.codigo = codigo
             detailedDto.razaoSocial = razaoSocial
             detailedDto.nomeFantasia = nomeFantasia
@@ -23,7 +23,7 @@ data class EmpresaDetailedDto(
             detailedDto.cnpj = cnpj
             detailedDto.email = email
             detailedDto.telefone = telefone
-            detailedDto.contrato = sisContrato?.toDto()
+            detailedDto.sisContrato = sisContrato?.toDto()
             detailedDto.sisUsuarioAtualizacao = sisUsuarioAtualizacao?.toDto()
             detailedDto.sisUsuarioCriacao = sisUsuarioCriacao?.toDto()
             detailedDto.dataCriacao = dataCriacao

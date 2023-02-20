@@ -16,8 +16,8 @@ data class SisContrato(
     @Column(nullable = false, unique = true)
     var nome: String = "",
 
-    @OneToMany(cascade = [CascadeType.ALL], targetEntity = Empresa::class, fetch = FetchType.LAZY)
-    var empresas: Set<Empresa> = HashSet<Empresa>(),
+    @OneToMany(targetEntity = CadEmpresa::class, fetch = FetchType.LAZY, mappedBy = "sisContrato")
+    var cadEmpresas: MutableList<CadEmpresa> = arrayListOf<CadEmpresa>(),
 
     @OneToOne
     var licenca: Licenca? = null,
@@ -25,6 +25,7 @@ data class SisContrato(
     @ManyToMany(targetEntity = SisUsuario::class, fetch = FetchType.LAZY)
     @JoinTable(name = "sis_contrato_usuario", joinColumns = [JoinColumn(name = "sis_contrato_codigo")], inverseJoinColumns = [JoinColumn(name = "sis_usuario_codigo")])
     var sisUsuarios: MutableList<SisUsuario> = arrayListOf<SisUsuario>(),
+
 
     @OneToOne(fetch = FetchType.LAZY)
     var sisUsuarioProprietario: SisUsuario? = null,
