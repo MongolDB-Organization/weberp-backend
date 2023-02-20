@@ -55,19 +55,19 @@ class CadEmpresaServiceImpl(@Autowired private val repository: CadEmpresaReposit
             }
         }
 
-        if (sisContrato.licenca == null) {
+        if (sisContrato.sisLicenca == null) {
             throw BadRequestException("Contrato não possui uma licença")
         }
 
-        if (sisContrato.licenca!!.dataVencimento == null) {
+        if (sisContrato.sisLicenca!!.dataVencimento == null) {
             throw BadRequestException("A licença do contrato não possui uma data de vencimento")
         }
 
-        if (LocalDateTime.now().isAfter(sisContrato.licenca!!.dataVencimento!!)) {
+        if (LocalDateTime.now().isAfter(sisContrato.sisLicenca!!.dataVencimento!!)) {
             throw BadRequestException("Licença do contrato expirada")
         }
 
-        if (sisContrato.licenca!!.quantidadeEmpresas!! <= repository.buscarQuantidadeEmpresaPorLicenca(sisContrato.licenca!!.codigo)) {
+        if (sisContrato.sisLicenca!!.quantidadeEmpresas!! <= repository.buscarQuantidadeEmpresaPorLicenca(sisContrato.sisLicenca!!.codigo)) {
             throw BadRequestException("Limite de empresas cadastradas atingido")
         }
 

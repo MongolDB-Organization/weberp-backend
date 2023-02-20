@@ -22,7 +22,7 @@ data class SisContratoDetailedDto(
             val detailedDto = SisContratoDetailedDto()
             detailedDto.codigo = codigo
             detailedDto.nome = nome
-            detailedDto.cadEmpresas = cadEmpresas!!.map { it -> it.toDto() }.toMutableList()
+            detailedDto.cadEmpresas = cadEmpresas.map { it -> it.toDto() }.toMutableList()
             detailedDto.sisUsuarioProprietario = sisUsuarioProprietario?.toDto()
             detailedDto.sisUsuarioCriacao = sisUsuarioCriacao?.toDto()
             detailedDto.sisUsuarioAtualizacao = sisUsuarioAtualizacao?.toDto()

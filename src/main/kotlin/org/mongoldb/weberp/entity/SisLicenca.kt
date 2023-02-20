@@ -8,8 +8,8 @@ import org.mongoldb.weberp.delegate.entity.NSEntity
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "licenca")
-open class Licenca(
+@Table(name = "sis_licenca")
+open class SisLicenca(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var codigo: Long = 0L,
 

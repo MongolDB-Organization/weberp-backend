@@ -14,6 +14,6 @@ interface CadEmpresaRepository : NSContratoLevelRepository<CadEmpresa> {
     @Query("select e from CadEmpresa e where e.incricaoEstadual = :inscricaoEstadual")
     fun findByInscricaoEstadual(@Param("inscricaoEstadual") inscricaoEstadual: String): Optional<CadEmpresa>
 
-    @Query("select count(e) from CadEmpresa e where e.sisContrato.licenca.codigo = :codigoLicenca")
+    @Query("select count(e) from CadEmpresa e where e.sisContrato.sisLicenca.codigo = :codigoLicenca")
     fun buscarQuantidadeEmpresaPorLicenca(@Param("codigoLicenca") codigoLicenca: Long): Long
 }

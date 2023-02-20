@@ -2,7 +2,6 @@ package org.mongoldb.weberp.dto.response
 
 import org.mongoldb.weberp.dto.response.SisContratoDto.Companion.toDto
 import org.mongoldb.weberp.entity.SisContrato
-import org.mongoldb.weberp.entity.CadEmpresa
 import org.mongoldb.weberp.entity.SisUsuario
 import java.time.LocalDateTime
 
@@ -10,7 +9,6 @@ data class SisUsuarioDetailedDto(
     var administrador: Boolean = false,
     var verificado: Boolean = false,
     var sisContratos: List<SisContratoDto> = listOf<SisContratoDto>(),
-    var cadEmpresas: Set<CadEmpresa> = HashSet<CadEmpresa>(),
     var sisUsuarioAtualizacao: SisUsuarioDto? = null,
     var sisUsuarioCriacao: SisUsuarioDto? = null,
     var dataCriacao: LocalDateTime? = null,

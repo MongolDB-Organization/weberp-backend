@@ -20,7 +20,8 @@ data class SisContrato(
     var cadEmpresas: MutableList<CadEmpresa> = arrayListOf<CadEmpresa>(),
 
     @OneToOne
-    var licenca: Licenca? = null,
+    @JoinColumn(name = "sis_licenca_codigo")
+    var sisLicenca: SisLicenca? = null,
 
     @ManyToMany(targetEntity = SisUsuario::class, fetch = FetchType.LAZY)
     @JoinTable(name = "sis_contrato_usuario", joinColumns = [JoinColumn(name = "sis_contrato_codigo")], inverseJoinColumns = [JoinColumn(name = "sis_usuario_codigo")])
