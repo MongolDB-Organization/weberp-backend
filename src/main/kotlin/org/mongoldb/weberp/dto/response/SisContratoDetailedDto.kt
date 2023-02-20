@@ -1,11 +1,11 @@
 package org.mongoldb.weberp.dto.response
 
 import org.mongoldb.weberp.dto.response.SisUsuarioDto.Companion.toDto
-import org.mongoldb.weberp.entity.Contrato
+import org.mongoldb.weberp.entity.SisContrato
 import org.mongoldb.weberp.entity.Empresa
 import java.time.LocalDateTime
 
-data class ContratoDetailedDto(
+data class SisContratoDetailedDto(
     var empresas: Set<Empresa> = HashSet<Empresa>(),
     var sisUsuarios: MutableList<SisUsuarioDto> = arrayListOf<SisUsuarioDto>(),
     var sisUsuarioProprietario: SisUsuarioDto? = null,
@@ -13,11 +13,11 @@ data class ContratoDetailedDto(
     var sisUsuarioAtualizacao: SisUsuarioDto? = null,
     var dataCriacao: LocalDateTime? = null,
     var dataModificacao: LocalDateTime? = null
-) : ContratoDto() {
+) : SisContratoDto() {
 
     companion object {
-        fun Contrato.toDetailedDto(): ContratoDetailedDto {
-            val detailedDto = ContratoDetailedDto()
+        fun SisContrato.toDetailedDto(): SisContratoDetailedDto {
+            val detailedDto = SisContratoDetailedDto()
             detailedDto.codigo = codigo
             detailedDto.nome = nome
             detailedDto.empresas = empresas

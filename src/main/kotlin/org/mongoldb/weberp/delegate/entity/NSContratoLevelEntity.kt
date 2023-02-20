@@ -1,7 +1,7 @@
 package org.mongoldb.weberp.delegate.entity
 
-import org.mongoldb.weberp.entity.Contrato
+import org.mongoldb.weberp.entity.SisContrato
 
 interface NSContratoLevelEntity : NSEntity {
-    var contrato: Contrato?
+    var sisContrato: SisContrato?
 }

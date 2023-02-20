@@ -1,24 +1,25 @@
 package org.mongoldb.weberp.service.impl
 
-import org.mongoldb.weberp.dto.response.ContratoDetailedDto
-import org.mongoldb.weberp.dto.response.ContratoDto
-import org.mongoldb.weberp.dto.request.ContratoCreateDto
-import org.mongoldb.weberp.dto.request.ContratoUpdateDto
-import org.mongoldb.weberp.dto.response.ContratoDetailedDto.Companion.toDetailedDto
-import org.mongoldb.weberp.dto.response.ContratoDto.Companion.toDto
+import jakarta.transaction.Transactional
+import org.mongoldb.weberp.dto.response.SisContratoDetailedDto
+import org.mongoldb.weberp.dto.response.SisContratoDto
+import org.mongoldb.weberp.dto.request.SisContratoCreateDto
+import org.mongoldb.weberp.dto.request.SisContratoUpdateDto
+import org.mongoldb.weberp.dto.response.SisContratoDetailedDto.Companion.toDetailedDto
+import org.mongoldb.weberp.dto.response.SisContratoDto.Companion.toDto
 import org.mongoldb.weberp.exception.BadRequestException
 import org.mongoldb.weberp.exception.NoPermitionException
 import org.mongoldb.weberp.exception.NotFoundException
-import org.mongoldb.weberp.repository.ContratoRepository
+import org.mongoldb.weberp.repository.SisContratoRepository
 import org.mongoldb.weberp.repository.SisUsuarioRepository
-import org.mongoldb.weberp.service.ContratoService
+import org.mongoldb.weberp.service.SisContratoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import kotlin.jvm.Throws
 import kotlin.jvm.optionals.getOrNull
 
 @Service
-class ContratoServiceImpl(@Autowired private val repository: ContratoRepository) : ContratoService {
+class SisContratoServiceImpl(@Autowired private val repository: SisContratoRepository) : SisContratoService {
 
     @Autowired
     private lateinit var sisUsuarioRepository: SisUsuarioRepository
@@ -26,44 +27,54 @@ class ContratoServiceImpl(@Autowired private val repository: ContratoRepository)
     @Autowired
     private lateinit var userLoggedUserService: LoggedUserServiceImpl
 
-    override fun findAll(): List<ContratoDto> {
+    override fun findAll(): List<SisContratoDto> {
         return repository.findAll().map { it -> it.toDto() }
     }
 
     @OptIn(ExperimentalStdlibApi::class)
     @Throws(NotFoundException::class, NotFoundException::class)
-    override fun findById(id: Long): ContratoDetailedDto {
+    @Transactional
+    override fun findById(id: Long): SisContratoDetailedDto {
         val loggedUser = userLoggedUserService.getLoggedUser()
         val contrato = repository.findById(id).getOrNull() ?: throw NotFoundException()
         val hasAcesso = sisUsuarioRepository.getContratosCodigos(loggedUser!!.codigo).contains(loggedUser.codigo)
         val isProprietario = contrato.sisUsuarioProprietario!!.codigo == loggedUser.codigo
         val isAdministrador = loggedUser.administrador
+
         if (!hasAcesso && !isProprietario && !isAdministrador) {
             throw NoPermitionException()
         }
+
         return contrato.toDetailedDto()
     }
 
-    override fun create(dto: ContratoCreateDto): ContratoDetailedDto {
+    @Transactional
+    override fun create(dto: SisContratoCreateDto): SisContratoDetailedDto {
         val loggedUser = userLoggedUserService.getLoggedUser()
         val contrato = dto.toEntity(null)
+
         contrato.sisUsuarioProprietario = loggedUser
         contrato.sisUsuarioCriacao = loggedUser
         contrato.sisUsuarioAtualizacao = loggedUser
         contrato.sisUsuarios.add(loggedUser!!)
+
         return repository.save(contrato).toDetailedDto()
     }
 
     @OptIn(ExperimentalStdlibApi::class)
     @Throws(BadRequestException::class, NotFoundException::class)
-    override fun update(id: Long, dto: ContratoUpdateDto): ContratoDetailedDto {
+    @Transactional
+    override fun update(id: Long, dto: SisContratoUpdateDto): SisContratoDetailedDto {
         val loggedUser = userLoggedUserService.getLoggedUser()
         var contrato = repository.findById(id).getOrNull() ?: throw NotFoundException()
+
         if (contrato.sisUsuarioProprietario!!.codigo != loggedUser!!.codigo) {
             throw BadRequestException("Contrato só pode ser editado pelo proprietário")
         }
+
         contrato = dto.toEntity(contrato)
         contrato.sisUsuarioAtualizacao = loggedUser
+
         return repository.save(contrato).toDetailedDto()
     }
 }

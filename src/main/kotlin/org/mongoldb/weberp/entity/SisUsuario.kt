@@ -35,9 +35,8 @@ open class SisUsuario(
     @Column(nullable = false)
     open var verificado: Boolean = false,
 
-    @ManyToMany(targetEntity = Contrato::class, fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
-    @JoinTable(name = "sis_contrato_usuario", joinColumns = [JoinColumn(name = "sis_usuario_codigo")], inverseJoinColumns = [JoinColumn(name = "sis_contrato_codigo")])
-    open var contratos: Set<Contrato> = HashSet<Contrato>(),
+    @ManyToMany(targetEntity = SisContrato::class, mappedBy = "sisUsuarios", fetch = FetchType.LAZY)
+    open var sisContratos: MutableList<SisContrato> = arrayListOf<SisContrato>(),
 
     @ManyToMany(targetEntity = Empresa::class, fetch = FetchType.LAZY)
     open var empresas: Set<Empresa> = HashSet<Empresa>(),

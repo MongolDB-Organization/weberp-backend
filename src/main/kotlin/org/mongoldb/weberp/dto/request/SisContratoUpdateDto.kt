@@ -2,15 +2,15 @@ package org.mongoldb.weberp.dto.request
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import org.mongoldb.weberp.entity.Contrato
+import org.mongoldb.weberp.entity.SisContrato
 
-open class ContratoUpdateDto (
+open class SisContratoUpdateDto (
     @get: NotNull
     @get: NotBlank
     var nome: String? = null
 ) {
-    open fun toEntity(mergeEntity: Contrato?): Contrato {
-        val entity = mergeEntity ?: Contrato()
+    open fun toEntity(mergeEntity: SisContrato?): SisContrato {
+        val entity = mergeEntity ?: SisContrato()
         entity.nome = nome ?: ""
         return entity
     }

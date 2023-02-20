@@ -1,7 +1,7 @@
 package org.mongoldb.weberp.dto.response
 
-import org.mongoldb.weberp.dto.response.ContratoDto.Companion.toDto
-import org.mongoldb.weberp.entity.Contrato
+import org.mongoldb.weberp.dto.response.SisContratoDto.Companion.toDto
+import org.mongoldb.weberp.entity.SisContrato
 import org.mongoldb.weberp.entity.Empresa
 import org.mongoldb.weberp.entity.SisUsuario
 import java.time.LocalDateTime
@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 data class SisUsuarioDetailedDto(
     var administrador: Boolean = false,
     var verificado: Boolean = false,
-    var contratos: List<ContratoDto> = listOf<ContratoDto>(),
+    var sisContratos: List<SisContratoDto> = listOf<SisContratoDto>(),
     var empresas: Set<Empresa> = HashSet<Empresa>(),
     var sisUsuarioAtualizacao: SisUsuarioDto? = null,
     var sisUsuarioCriacao: SisUsuarioDto? = null,
@@ -30,7 +30,7 @@ data class SisUsuarioDetailedDto(
             detailedDto.empresas = empresas
             detailedDto.sisUsuarioAtualizacao = sisUsuarioAtualizacao?.toDto()
             detailedDto.sisUsuarioCriacao = sisUsuarioCriacao?.toDto()
-            detailedDto.contratos = contratos.map { it: Contrato -> it.toDto() }
+            detailedDto.sisContratos = sisContratos.map { it: SisContrato -> it.toDto() }
             return detailedDto
         }
     }

@@ -1,12 +1,12 @@
 package org.mongoldb.weberp.dto.response
 
-import org.mongoldb.weberp.dto.response.ContratoDto.Companion.toDto
+import org.mongoldb.weberp.dto.response.SisContratoDto.Companion.toDto
 import org.mongoldb.weberp.dto.response.SisUsuarioDto.Companion.toDto
 import org.mongoldb.weberp.entity.Empresa
 import java.time.LocalDateTime
 
 data class EmpresaDetailedDto(
-    var contrato: ContratoDto? = null,
+    var contrato: SisContratoDto? = null,
     var sisUsuarioAtualizacao: SisUsuarioDto? = null,
     var sisUsuarioCriacao: SisUsuarioDto? = null,
     var dataCriacao: LocalDateTime? = null,
@@ -23,7 +23,7 @@ data class EmpresaDetailedDto(
             detailedDto.cnpj = cnpj
             detailedDto.email = email
             detailedDto.telefone = telefone
-            detailedDto.contrato = contrato?.toDto()
+            detailedDto.contrato = sisContrato?.toDto()
             detailedDto.sisUsuarioAtualizacao = sisUsuarioAtualizacao?.toDto()
             detailedDto.sisUsuarioCriacao = sisUsuarioCriacao?.toDto()
             detailedDto.dataCriacao = dataCriacao

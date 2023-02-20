@@ -14,6 +14,6 @@ interface EmpresaRepository : NSContratoLevelRepository<Empresa> {
     @Query("select e from Empresa e where e.incricaoEstadual = :inscricaoEstadual")
     fun findByInscricaoEstadual(@Param("inscricaoEstadual") inscricaoEstadual: String): Optional<Empresa>
 
-    @Query("select count(e) from Empresa e where e.contrato.licenca.codigo = :codigoLicenca")
+    @Query("select count(e) from Empresa e where e.sisContrato.licenca.codigo = :codigoLicenca")
     fun buscarQuantidadeEmpresaPorLicenca(@Param("codigoLicenca") codigoLicenca: Long): Long
 }

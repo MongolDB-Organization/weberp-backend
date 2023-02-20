@@ -34,7 +34,7 @@ open class Licenca(
     open var quantidadeEmpresas: Int?,
 
     @ManyToOne
-    open var contrato: Contrato?,
+    open var sisContrato: SisContrato?,
 
     @OneToOne
     override var sisUsuarioAtualizacao: SisUsuario? = null,

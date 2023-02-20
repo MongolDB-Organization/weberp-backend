@@ -33,7 +33,7 @@ open class Empresa(
 
     @ManyToOne(cascade = [CascadeType.REMOVE])
     @JoinColumn(nullable = false)
-    override var contrato: Contrato? = null,
+    override var sisContrato: SisContrato? = null,
 
     @OneToOne
     override var sisUsuarioAtualizacao: SisUsuario? = null,
