@@ -1,8 +1,8 @@
 package org.mongoldb.weberp.service
 
-import org.mongoldb.weberp.entity.CadUsuario
+import org.mongoldb.weberp.entity.SisUsuario
 
 interface LoggedUserService {
 
-    fun getLoggedUser(): CadUsuario?
+    fun getLoggedUser(): SisUsuario?
 }

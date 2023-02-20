@@ -10,7 +10,7 @@ import org.mongoldb.weberp.exception.BadRequestException
 import org.mongoldb.weberp.exception.NoPermitionException
 import org.mongoldb.weberp.exception.NotFoundException
 import org.mongoldb.weberp.repository.ContratoRepository
-import org.mongoldb.weberp.repository.CadUsuarioRepository
+import org.mongoldb.weberp.repository.SisUsuarioRepository
 import org.mongoldb.weberp.service.ContratoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -21,7 +21,7 @@ import kotlin.jvm.optionals.getOrNull
 class ContratoServiceImpl(@Autowired private val repository: ContratoRepository) : ContratoService {
 
     @Autowired
-    private lateinit var cadUsuarioRepository: CadUsuarioRepository
+    private lateinit var sisUsuarioRepository: SisUsuarioRepository
 
     @Autowired
     private lateinit var userLoggedUserService: LoggedUserServiceImpl
@@ -35,8 +35,8 @@ class ContratoServiceImpl(@Autowired private val repository: ContratoRepository)
     override fun findById(id: Long): ContratoDetailedDto {
         val loggedUser = userLoggedUserService.getLoggedUser()
         val contrato = repository.findById(id).getOrNull() ?: throw NotFoundException()
-        val hasAcesso = cadUsuarioRepository.getContratosCodigos(loggedUser!!.codigo).contains(loggedUser.codigo)
-        val isProprietario = contrato.cadUsuarioProprietario!!.codigo == loggedUser.codigo
+        val hasAcesso = sisUsuarioRepository.getContratosCodigos(loggedUser!!.codigo).contains(loggedUser.codigo)
+        val isProprietario = contrato.sisUsuarioProprietario!!.codigo == loggedUser.codigo
         val isAdministrador = loggedUser.administrador
         if (!hasAcesso && !isProprietario && !isAdministrador) {
             throw NoPermitionException()
@@ -47,10 +47,10 @@ class ContratoServiceImpl(@Autowired private val repository: ContratoRepository)
     override fun create(dto: ContratoCreateDto): ContratoDetailedDto {
         val loggedUser = userLoggedUserService.getLoggedUser()
         val contrato = dto.toEntity(null)
-        contrato.cadUsuarioProprietario = loggedUser
-        contrato.cadUsuarioCriacao = loggedUser
-        contrato.cadUsuarioAtualizacao = loggedUser
-        contrato.cadUsuarios.add(loggedUser!!)
+        contrato.sisUsuarioProprietario = loggedUser
+        contrato.sisUsuarioCriacao = loggedUser
+        contrato.sisUsuarioAtualizacao = loggedUser
+        contrato.sisUsuarios.add(loggedUser!!)
         return repository.save(contrato).toDetailedDto()
     }
 
@@ -59,11 +59,11 @@ class ContratoServiceImpl(@Autowired private val repository: ContratoRepository)
     override fun update(id: Long, dto: ContratoUpdateDto): ContratoDetailedDto {
         val loggedUser = userLoggedUserService.getLoggedUser()
         var contrato = repository.findById(id).getOrNull() ?: throw NotFoundException()
-        if (contrato.cadUsuarioProprietario!!.codigo != loggedUser!!.codigo) {
+        if (contrato.sisUsuarioProprietario!!.codigo != loggedUser!!.codigo) {
             throw BadRequestException("Contrato só pode ser editado pelo proprietário")
         }
         contrato = dto.toEntity(contrato)
-        contrato.cadUsuarioAtualizacao = loggedUser
+        contrato.sisUsuarioAtualizacao = loggedUser
         return repository.save(contrato).toDetailedDto()
     }
 }

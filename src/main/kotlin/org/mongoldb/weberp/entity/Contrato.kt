@@ -21,17 +21,17 @@ data class Contrato(
     var empresas: Set<Empresa> = HashSet<Empresa>(),
 
     @OneToOne var licenca: Licenca? = null,
-    @ManyToMany(cascade = [CascadeType.PERSIST], targetEntity = CadUsuario::class, mappedBy = "contratos")
-    var cadUsuarios: MutableList<CadUsuario> = arrayListOf<CadUsuario>(),
+    @ManyToMany(cascade = [CascadeType.PERSIST], targetEntity = SisUsuario::class, mappedBy = "contratos")
+    var sisUsuarios: MutableList<SisUsuario> = arrayListOf<SisUsuario>(),
 
     @OneToOne()
-    var cadUsuarioProprietario: CadUsuario? = null,
+    var sisUsuarioProprietario: SisUsuario? = null,
 
     @OneToOne()
-    override var cadUsuarioCriacao: CadUsuario? = null,
+    override var sisUsuarioCriacao: SisUsuario? = null,
 
     @OneToOne()
-    override var cadUsuarioAtualizacao: CadUsuario? = null,
+    override var sisUsuarioAtualizacao: SisUsuario? = null,
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

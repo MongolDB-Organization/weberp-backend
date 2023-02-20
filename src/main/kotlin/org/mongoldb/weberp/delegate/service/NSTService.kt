@@ -2,7 +2,7 @@ package org.mongoldb.weberp.delegate.service
 
 import org.mongoldb.weberp.delegate.entity.NSEntity
 import org.mongoldb.weberp.delegate.repository.NSRepository
-import org.mongoldb.weberp.entity.CadUsuario
+import org.mongoldb.weberp.entity.SisUsuario
 import org.mongoldb.weberp.exception.NotFoundException
 import org.mongoldb.weberp.service.impl.LoggedUserServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,7 @@ abstract class NSTService<OB : NSEntity, DTO, D_DTO, S_DTO>(@Autowired private v
     @Autowired
     private lateinit var loggedUserService: LoggedUserServiceImpl
 
-    open fun getLoggedUser(): CadUsuario? = loggedUserService.getLoggedUser()
+    open fun getLoggedUser(): SisUsuario? = loggedUserService.getLoggedUser()
 
     open fun findAll(): List<DTO> {
         return repository.findAll().map<OB, DTO> { it ->
@@ -59,13 +59,13 @@ abstract class NSTService<OB : NSEntity, DTO, D_DTO, S_DTO>(@Autowired private v
     open fun beforeCreateAndUpdate(obj: OB, idUpdate: Long?, saveType: NSTServiceSaveType) {
         val loggedUser = getLoggedUser()
         if (saveType == NSTServiceSaveType.CREATE) {
-            obj.cadUsuarioCriacao = loggedUser
-            obj.cadUsuarioAtualizacao = loggedUser
+            obj.sisUsuarioCriacao = loggedUser
+            obj.sisUsuarioAtualizacao = loggedUser
         } else if (saveType == NSTServiceSaveType.UPDATE) {
             if (!repository.findById(idUpdate!!).isPresent) {
                 throw NotFoundException()
             }
-            obj.cadUsuarioAtualizacao = loggedUser
+            obj.sisUsuarioAtualizacao = loggedUser
         }
     }
 }

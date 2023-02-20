@@ -9,8 +9,8 @@ import org.mongoldb.weberp.delegate.entity.NSEntity
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "cad_usuario")
-open class CadUsuario(
+@Table(name = "sis_usuario")
+open class SisUsuario(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var codigo: Long = 0L,
 
@@ -36,7 +36,7 @@ open class CadUsuario(
     open var verificado: Boolean = false,
 
     @ManyToMany(targetEntity = Contrato::class, fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
-    @JoinTable(name = "sis_contrato_usuario", joinColumns = [JoinColumn(name = "cad_usuario_codigo")], inverseJoinColumns = [JoinColumn(name = "sis_contrato_codigo")])
+    @JoinTable(name = "sis_contrato_usuario", joinColumns = [JoinColumn(name = "sis_usuario_codigo")], inverseJoinColumns = [JoinColumn(name = "sis_contrato_codigo")])
     open var contratos: Set<Contrato> = HashSet<Contrato>(),
 
     @ManyToMany(targetEntity = Empresa::class, fetch = FetchType.LAZY)
@@ -44,11 +44,11 @@ open class CadUsuario(
 
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    override var cadUsuarioAtualizacao: CadUsuario? = null,
+    override var sisUsuarioAtualizacao: SisUsuario? = null,
 
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    override var cadUsuarioCriacao: CadUsuario? = null,
+    override var sisUsuarioCriacao: SisUsuario? = null,
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

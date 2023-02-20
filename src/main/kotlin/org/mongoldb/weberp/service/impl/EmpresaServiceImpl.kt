@@ -13,7 +13,7 @@ import org.mongoldb.weberp.exception.NoPermitionException
 import org.mongoldb.weberp.exception.NotFoundException
 import org.mongoldb.weberp.repository.ContratoRepository
 import org.mongoldb.weberp.repository.EmpresaRepository
-import org.mongoldb.weberp.repository.CadUsuarioRepository
+import org.mongoldb.weberp.repository.SisUsuarioRepository
 import org.mongoldb.weberp.service.EmpresaService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -28,7 +28,7 @@ class EmpresaServiceImpl(@Autowired private val repository: EmpresaRepository) :
     private lateinit var contratoRepository: ContratoRepository
 
     @Autowired
-    private lateinit var cadUsuarioRepository: CadUsuarioRepository
+    private lateinit var sisUsuarioRepository: SisUsuarioRepository
 
     @Autowired
     private lateinit var userLoggedUserService: LoggedUserServiceImpl
@@ -48,7 +48,7 @@ class EmpresaServiceImpl(@Autowired private val repository: EmpresaRepository) :
     override fun create(empresaDto: EmpresaCreateDto): EmpresaDetailedDto {
         val loggedUser = userLoggedUserService.getLoggedUser()
         val contrato = contratoRepository.findById(empresaDto.contratoCodigo!!).getOrNull() ?: throw NotFoundException("Contrato não encontrado")
-        if (contrato.cadUsuarioProprietario!!.codigo != loggedUser!!.codigo) {
+        if (contrato.sisUsuarioProprietario!!.codigo != loggedUser!!.codigo) {
             if (!loggedUser.administrador) {
                 throw NoPermitionException("Somente o proprietário do contrato pode adicionar uma nova empresa")
             }
@@ -73,8 +73,8 @@ class EmpresaServiceImpl(@Autowired private val repository: EmpresaRepository) :
             throw DuplicateEntryException(empresaDto::incricaoEstadual.name)
         }
         empresa.contrato = contrato
-        empresa.cadUsuarioCriacao = loggedUser
-        empresa.cadUsuarioAtualizacao = loggedUser
+        empresa.sisUsuarioCriacao = loggedUser
+        empresa.sisUsuarioAtualizacao = loggedUser
         return repository.save(empresa).toDetailedDto()
     }
 

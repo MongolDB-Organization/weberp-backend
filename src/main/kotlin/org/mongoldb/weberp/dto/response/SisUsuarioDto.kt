@@ -1,8 +1,8 @@
 package org.mongoldb.weberp.dto.response
 
-import org.mongoldb.weberp.entity.CadUsuario
+import org.mongoldb.weberp.entity.SisUsuario
 
-open class CadUsuarioDto(
+open class SisUsuarioDto(
     var codigo: Long = 0,
     var nome: String? = null,
     var email: String? = null,
@@ -10,8 +10,8 @@ open class CadUsuarioDto(
 ) {
 
     companion object {
-        fun CadUsuario.toDto(): CadUsuarioDto {
-            val dto = CadUsuarioDto()
+        fun SisUsuario.toDto(): SisUsuarioDto {
+            val dto = SisUsuarioDto()
             dto.codigo = codigo
             dto.nome = nome
             dto.email = email

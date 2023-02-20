@@ -3,22 +3,22 @@ package org.mongoldb.weberp.dto.response
 import org.mongoldb.weberp.dto.response.ContratoDto.Companion.toDto
 import org.mongoldb.weberp.entity.Contrato
 import org.mongoldb.weberp.entity.Empresa
-import org.mongoldb.weberp.entity.CadUsuario
+import org.mongoldb.weberp.entity.SisUsuario
 import java.time.LocalDateTime
 
-data class CadUsuarioDetailedDto(
+data class SisUsuarioDetailedDto(
     var administrador: Boolean = false,
     var verificado: Boolean = false,
     var contratos: List<ContratoDto> = listOf<ContratoDto>(),
     var empresas: Set<Empresa> = HashSet<Empresa>(),
-    var cadUsuarioAtualizacao: CadUsuarioDto? = null,
-    var cadUsuarioCriacao: CadUsuarioDto? = null,
+    var sisUsuarioAtualizacao: SisUsuarioDto? = null,
+    var sisUsuarioCriacao: SisUsuarioDto? = null,
     var dataCriacao: LocalDateTime? = null,
     var dataModificacao: LocalDateTime? = null,
-) : CadUsuarioDto() {
+) : SisUsuarioDto() {
     companion object {
-        fun CadUsuario.toDetailedDto(): CadUsuarioDetailedDto {
-            val detailedDto = CadUsuarioDetailedDto()
+        fun SisUsuario.toDetailedDto(): SisUsuarioDetailedDto {
+            val detailedDto = SisUsuarioDetailedDto()
             detailedDto.codigo = codigo
             detailedDto.nome = nome
             detailedDto.email = email
@@ -28,8 +28,8 @@ data class CadUsuarioDetailedDto(
             detailedDto.dataModificacao = dataModificacao
             detailedDto.dataCriacao = dataCriacao
             detailedDto.empresas = empresas
-            detailedDto.cadUsuarioAtualizacao = cadUsuarioAtualizacao?.toDto()
-            detailedDto.cadUsuarioCriacao = cadUsuarioCriacao?.toDto()
+            detailedDto.sisUsuarioAtualizacao = sisUsuarioAtualizacao?.toDto()
+            detailedDto.sisUsuarioCriacao = sisUsuarioCriacao?.toDto()
             detailedDto.contratos = contratos.map { it: Contrato -> it.toDto() }
             return detailedDto
         }

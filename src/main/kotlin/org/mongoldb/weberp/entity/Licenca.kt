@@ -37,9 +37,10 @@ open class Licenca(
     open var contrato: Contrato?,
 
     @OneToOne
-    override var cadUsuarioAtualizacao: CadUsuario? = null,
+    override var sisUsuarioAtualizacao: SisUsuario? = null,
+
     @OneToOne
-    override var cadUsuarioCriacao: CadUsuario? = null,
+    override var sisUsuarioCriacao: SisUsuario? = null,
 
     @Column(nullable = false, updatable = false) @CreationTimestamp
     override var dataCriacao: LocalDateTime?,
