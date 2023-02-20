@@ -43,6 +43,7 @@ class AutenticacaoServiceImpl : AutenticacaoService {
     override fun getLoggedUser(): SisUsuario? {
         val email = SecurityContextHolder.getContext().authentication.name
         val userOptional = sisUsuarioRepository.findByEmail(email)
+
         return if (userOptional.isPresent) userOptional.get() else null
     }
 
@@ -59,25 +60,27 @@ class AutenticacaoServiceImpl : AutenticacaoService {
 
     override fun signin(email: String, password: String): String {
         authenticateWithEmailAndPassword(email, password)
-        val userDetails = autenticacaoService.loadUserByUsername(email)
-        return jwtTokenUtil.generateToken(userDetails)
+        return jwtTokenUtil.generateToken(autenticacaoService.loadUserByUsername(email))
     }
 
     override fun signup(nome: String, email: String, password: String, telefone: String?): String {
-        val usuarioFindEmail = sisUsuarioRepository.findByEmail(email)
-        if (usuarioFindEmail.isPresent) {
+        if (sisUsuarioRepository.findByEmail(email).isPresent) {
             throw DuplicateEntryException(SisUsuario::email.name)
         }
+
         var sisUsuario = SisUsuario()
+
         sisUsuario.nome = nome
         sisUsuario.email = email
         sisUsuario.senha = passwordEncoderConfiguration.passwordEncoder()!!.encode(password)
         sisUsuario.telefone = telefone
         sisUsuario.administrador = false
         sisUsuario = sisUsuarioRepository.save(sisUsuario)
+
         sisUsuario.sisUsuarioAtualizacao = sisUsuario
         sisUsuario.sisUsuarioCriacao = sisUsuario
         sisUsuarioRepository.save(sisUsuario)
+
         authenticateWithEmailAndPassword(email, password)
         return jwtTokenUtil.generateToken(autenticacaoService.loadUserByUsername(email))
     }
@@ -89,12 +92,15 @@ class AutenticacaoServiceImpl : AutenticacaoService {
         val emailDetails = EmailDetails(
             email, "Seu código de verificação é $verificationCode", "Código de verificação"
         )
+
         if (usuario.verificado) {
             throw BadRequestException("Usuário já verificado")
         }
+
         if (!emailService.sendMail(emailDetails)) {
             throw BadRequestException("Não foi possível enviar o email de verificação")
         }
+
         usuario.codigoVerificacao = verificationCode
         sisUsuarioRepository.save(usuario)
     }
@@ -102,12 +108,15 @@ class AutenticacaoServiceImpl : AutenticacaoService {
     @Throws(BadRequestException::class)
     override fun validateVerificationCode(verifyCode: String) {
         val currentUser = getLoggedUser()
+
         if (currentUser!!.verificado) {
             throw BadRequestException("Usuário já verificado")
         }
+
         if (currentUser.codigoVerificacao != verifyCode) {
             throw BadRequestException("Código de verificação inválido")
         }
+
         currentUser.codigoVerificacao = null
         currentUser.verificado = true
         sisUsuarioRepository.save(currentUser)
