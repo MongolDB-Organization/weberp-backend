@@ -65,19 +65,27 @@ class AutenticacaoServiceImpl : AutenticacaoService {
 
     override fun signup(nome: String, email: String, password: String, telefone: String?): String {
         val usuarioFindEmail = sisUsuarioRepository.findByEmail(email)
+
         if (usuarioFindEmail.isPresent) {
-            throw DuplicateEntryException("email")
+            throw DuplicateEntryException(SisUsuario::email.name)
         }
-        val sisUsuario = SisUsuario()
+
+        val sisUsuarioLogado = getLoggedUser()
+        var sisUsuario = SisUsuario()
+
         sisUsuario.nome = nome
         sisUsuario.email = email
         sisUsuario.senha = passwordEncoderConfiguration.passwordEncoder()!!.encode(password)
         sisUsuario.telefone = telefone
         sisUsuario.administrador = false
+        sisUsuario = sisUsuarioRepository.save(sisUsuario)
+
+        sisUsuario.sisUsuarioAtualizacao = sisUsuario
+        sisUsuario.sisUsuarioCriacao = sisUsuario
         sisUsuarioRepository.save(sisUsuario)
+
         authenticateWithEmailAndPassword(email, password)
-        val userDetails = autenticacaoService.loadUserByUsername(email)
-        return jwtTokenUtil.generateToken(userDetails)
+        return jwtTokenUtil.generateToken(autenticacaoService.loadUserByUsername(email))
     }
 
     @Throws(NotFoundException::class, BadRequestException::class)
