@@ -7,7 +7,9 @@ import org.mongoldb.weberp.dto.request.SisContratoCreateDto
 import org.mongoldb.weberp.dto.request.SisContratoUpdateDto
 import org.mongoldb.weberp.dto.response.SisContratoDetailedDto.Companion.toDetailedDto
 import org.mongoldb.weberp.dto.response.SisContratoDto.Companion.toDto
+import org.mongoldb.weberp.entity.SisContrato
 import org.mongoldb.weberp.exception.BadRequestException
+import org.mongoldb.weberp.exception.DuplicateEntryException
 import org.mongoldb.weberp.exception.NoPermitionException
 import org.mongoldb.weberp.exception.NotFoundException
 import org.mongoldb.weberp.repository.SisContratoRepository
@@ -53,6 +55,10 @@ class SisContratoServiceImpl(@Autowired private val repository: SisContratoRepos
         val loggedUser = userLoggedUserService.getLoggedUser()
         val contrato = dto.toEntity(null)
 
+        if (repository.findByNome(contrato.nome) != null) {
+            throw DuplicateEntryException(SisContrato::nome.name)
+        }
+
         contrato.sisUsuarioProprietario = loggedUser
         contrato.sisUsuarioCriacao = loggedUser
         contrato.sisUsuarioAtualizacao = loggedUser
@@ -70,6 +76,12 @@ class SisContratoServiceImpl(@Autowired private val repository: SisContratoRepos
 
         if (contrato.sisUsuarioProprietario!!.codigo != loggedUser!!.codigo) {
             throw BadRequestException("Contrato só pode ser editado pelo proprietário")
+        }
+
+        val contratoByNome = repository.findByNome(dto.nome!!);
+
+        if (contratoByNome != null && contratoByNome.codigo != id) {
+            throw DuplicateEntryException(SisContrato::nome.name)
         }
 
         contrato = dto.toEntity(contrato)

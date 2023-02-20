@@ -13,7 +13,7 @@ data class SisContrato(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var codigo: Long = 0,
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     var nome: String = "",
 
     @OneToMany(cascade = [CascadeType.ALL], targetEntity = Empresa::class, fetch = FetchType.LAZY)
