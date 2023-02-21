@@ -5,7 +5,7 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "cad_cidade")
 open class CadCidade {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(updatable = false)
     open var codigo: Long? = null
 
     @Column(nullable = false, updatable = false)

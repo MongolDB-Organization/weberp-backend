@@ -1,5 +1,6 @@
 package org.mongoldb.weberp.dto.response
 
+import org.mongoldb.weberp.dto.response.CadEmpresaEnderecoDto.Companion.toDto
 import org.mongoldb.weberp.dto.response.SisContratoDto.Companion.toDto
 import org.mongoldb.weberp.dto.response.SisUsuarioDto.Companion.toDto
 import org.mongoldb.weberp.entity.CadEmpresa
@@ -11,6 +12,7 @@ data class CadEmpresaDetailedDto(
     var sisUsuarioCriacao: SisUsuarioDto? = null,
     var dataCriacao: LocalDateTime? = null,
     var dataModificacao: LocalDateTime? = null,
+    var cadEmpresaEnderecos: MutableSet<CadEmpresaEnderecoDto> = hashSetOf<CadEmpresaEnderecoDto>()
 ) : CadEmpresaDto() {
 
     companion object {
@@ -28,6 +30,7 @@ data class CadEmpresaDetailedDto(
             detailedDto.sisUsuarioCriacao = sisUsuarioCriacao?.toDto()
             detailedDto.dataCriacao = dataCriacao
             detailedDto.dataModificacao = dataModificacao
+            detailedDto.cadEmpresaEnderecos = cadEmpresaEnderecos.map { it -> it.toDto() }.toHashSet()
             return detailedDto
         }
     }

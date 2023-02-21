@@ -12,8 +12,7 @@ import org.mongoldb.weberp.exception.BadRequestException
 import org.mongoldb.weberp.exception.DuplicateEntryException
 import org.mongoldb.weberp.exception.NoPermitionException
 import org.mongoldb.weberp.exception.NotFoundException
-import org.mongoldb.weberp.repository.SisContratoRepository
-import org.mongoldb.weberp.repository.CadEmpresaRepository
+import org.mongoldb.weberp.repository.*
 import org.mongoldb.weberp.service.CadEmpresaService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -29,6 +28,15 @@ class CadEmpresaServiceImpl(@Autowired private val repository: CadEmpresaReposit
 
     @Autowired
     private lateinit var userLoggedUserService: LoggedUserServiceImpl
+
+    @Autowired
+    private lateinit var cadEmpresaEnderecoRepository: CadEmpresaEnderecoRepository
+
+    @Autowired
+    private lateinit var cadEnderecoRepository: CadEnderecoRepository
+
+    @Autowired
+    private lateinit var cadCidadeRepository: CadCidadeRepository
 
     @Transactional
     override fun findAll(): List<CadEmpresaDto> {
@@ -71,7 +79,6 @@ class CadEmpresaServiceImpl(@Autowired private val repository: CadEmpresaReposit
             throw BadRequestException("Limite de empresas cadastradas atingido")
         }
 
-        val cadEmpresa = dto.toEntity()
 
         if (repository.findByCnpj(dto.cnpj!!).isPresent) {
             throw DuplicateEntryException(dto::cnpj.name)
@@ -81,9 +88,31 @@ class CadEmpresaServiceImpl(@Autowired private val repository: CadEmpresaReposit
             throw DuplicateEntryException(dto::incricaoEstadual.name)
         }
 
+        val cadEmpresa = dto.toEntity()
+        val cadEmpresaEnderecos = cadEmpresa.cadEmpresaEnderecos
+
+        cadEmpresa.cadEmpresaEnderecos = mutableListOf()
+        repository.save(cadEmpresa)
+
+        for (end in cadEmpresaEnderecos) {
+            end.cadEmpresa = cadEmpresa
+            end.sisUsuarioAtualizacao = loggedUser
+            end.cadEndereco?.sisUsuarioAtualizacao = loggedUser
+            end.cadEndereco?.cadCidade = cadCidadeRepository.findById(end.cadEndereco!!.cadCidade!!.codigo!!).getOrNull() ?: throw NotFoundException("Cidade não encontrada")
+
+            if (end.codigo == null) {
+                end.sisUsuarioCriacao = loggedUser
+            }
+
+            if (end.cadEndereco?.codigo == null) {
+                end.cadEndereco?.sisUsuarioCriacao = loggedUser
+            }
+        }
+
         cadEmpresa.sisContrato = sisContrato
         cadEmpresa.sisUsuarioCriacao = loggedUser
         cadEmpresa.sisUsuarioAtualizacao = loggedUser
+        cadEmpresa.cadEmpresaEnderecos = cadEmpresaEnderecos
 
         return repository.save(cadEmpresa).toDetailedDto()
     }
@@ -95,7 +124,7 @@ class CadEmpresaServiceImpl(@Autowired private val repository: CadEmpresaReposit
         var cadEmpresa = repository.findById(id).getOrNull() ?: throw NotFoundException()
         val loggedUser = userLoggedUserService.getLoggedUser()
 
-        if (loggedUser!!.codigo != cadEmpresa.sisContrato!!.codigo) {
+        if (loggedUser!!.codigo != cadEmpresa.sisContrato!!.sisUsuarioProprietario!!.codigo) {
             throw NoPermitionException("Somente o proprietário do contrato pode atualizar a empresa")
         }
 
@@ -111,6 +140,21 @@ class CadEmpresaServiceImpl(@Autowired private val repository: CadEmpresaReposit
 
         cadEmpresa = dto.toEntity(cadEmpresa)
         cadEmpresa.codigo = empresaCodigo
+
+        for (end in cadEmpresa.cadEmpresaEnderecos) {
+            end.cadEmpresa = cadEmpresa
+            end.sisUsuarioAtualizacao = loggedUser
+            end.cadEndereco?.sisUsuarioAtualizacao = loggedUser
+            end.cadEndereco?.cadCidade = cadCidadeRepository.findById(end.cadEndereco!!.cadCidade!!.codigo!!).getOrNull() ?: throw NotFoundException("Cidade não encontrada")
+
+            if (end.codigo == null) {
+                end.sisUsuarioCriacao = loggedUser
+            }
+
+            if (end.cadEndereco?.codigo == null) {
+                end.cadEndereco?.sisUsuarioCriacao = loggedUser
+            }
+        }
 
         return repository.save(cadEmpresa).toDetailedDto()
     }

@@ -48,4 +48,8 @@ open class CadEmpresa(
     @Column(nullable = false)
     @UpdateTimestamp
     override var dataModificacao: LocalDateTime? = LocalDateTime.now(),
-) : NSContratoLevelEntity
+) : NSContratoLevelEntity {
+
+    @OneToMany(mappedBy = "cadEmpresa", cascade = [CascadeType.ALL], orphanRemoval = true, targetEntity = CadEmpresaEndereco::class)
+    open var cadEmpresaEnderecos: MutableList<CadEmpresaEndereco> = mutableListOf()
+}
